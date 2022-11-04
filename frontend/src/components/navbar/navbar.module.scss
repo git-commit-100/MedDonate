@@ -1,0 +1,64 @@
+@use "../../index.scss";
+
+.navbar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  @include index.boxShadow;
+
+  .nav {
+    padding: 0.5rem 2rem;
+    width: 100%;
+    @include index.flex-row;
+    justify-content: space-between;
+
+    .navbar-logo {
+      width: 12rem;
+      height: 3rem;
+      object-fit: cover;
+      cursor: pointer;
+    }
+
+    .nav-ul {
+      width: 30%;
+      list-style: none;
+      @include index.flex-row;
+      justify-content: space-between;
+
+      .nav-item {
+        @include index.flex-row;
+        cursor: pointer;
+        font-weight: bold;
+        color: index.$darkerGray;
+        @include index.transition;
+
+        .icon {
+          height: 1.25rem;
+          width: 1.25rem;
+        }
+
+        &:hover,
+        &.active {
+          color: index.$lightGreen;
+        }
+      }
+    }
+  }
+
+  // responsive queries
+  @media screen and (max-width: 500px) {
+    .nav {
+      padding: 0.25rem 0.5rem;
+      @include index.flex-col;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      row-gap: 0.5rem;
+
+      .nav-ul {
+        width: 100%;
+        padding-bottom: 0.5rem;
+      }
+    }
+  }
+}

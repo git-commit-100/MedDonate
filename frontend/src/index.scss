@@ -47,6 +47,10 @@ $lightRed: #ffe6e6;
   }
 }
 
+@mixin boxShadow {
+  box-shadow: 0 0 5px 2px rgba($color: $black, $alpha: 0.1);
+}
+
 * {
   margin: 0;
   padding: 0;

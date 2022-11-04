@@ -1,19 +1,15 @@
-import Input from "./components/layout/Input";
+import Navbar from "./components/navbar/navbar";
+import Section from "./components/layout/Section";
 
 function App() {
   return (
     <div className="App">
-      <h1>React</h1>
-      <Input
-        inputConfig={{
-          type: "email",
-          autoComplete: "none",
-          placeholder: "yourEmail@email.com",
-        }}
-        label={"Enter your email"}
-        type="required"
-        callback={(name) => name !== ""}
-      />
+      <header>
+        <Navbar />
+      </header>
+      <body>
+        <Section bg="primary" full={"yes"}>React Application</Section>
+      </body>
     </div>
   );
 }
