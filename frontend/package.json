@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "react-icons": "^4.6.0",
     "sass": "^1.55.0"
   }
 }

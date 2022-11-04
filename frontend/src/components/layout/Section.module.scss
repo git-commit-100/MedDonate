@@ -1,0 +1,19 @@
+@use "../../index.scss";
+
+.section {
+  width: 100vw;
+  padding: 1rem 2rem;
+  box-shadow: 0 0 5px 0 rgba($color: #000000, $alpha: 0.1);
+}
+
+.primary {
+  background-color: index.$lighterGreen;
+}
+
+.secondary {
+  background-color: index.$white;
+}
+
+.full {
+  height: 100vh;
+}
