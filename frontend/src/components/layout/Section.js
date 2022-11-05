@@ -1,23 +1,26 @@
 import styles from "./Section.module.scss";
 
 //? docs
-// children -> inside component
+// Component -> component
 // bg -> primary / secondary
 // full -> full width and height, true / false
 // className
 
-function Section({ children, bg = "primary", full = false, className }) {
-  return (
-    <div
-      className={`${
-        className ? `${className} ${styles["section"]}` : styles["section"]
-      } ${full ? styles["full"] : ""} ${
-        bg === "secondary" ? styles["secondary"] : styles["primary"]
-      }`}
-    >
-      {children}
-    </div>
-  );
+function Section(Component, id, bg = "primary", full = false, className) {
+  return function () {
+    return (
+      <div
+        id={id}
+        className={`${
+          className ? `${className} ${styles["section"]}` : styles["section"]
+        } ${full ? styles["full"] : ""} ${
+          bg === "secondary" ? styles["secondary"] : styles["primary"]
+        } ${bg === "footer" ? styles["footer"] : ""}`}
+      >
+        <Component />
+      </div>
+    );
+  };
 }
 
 export default Section;

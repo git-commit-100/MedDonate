@@ -6,6 +6,7 @@
   left: 0;
   width: 100vw;
   @include index.boxShadow;
+  background-color: index.$white;
 
   .nav {
     padding: 0.5rem 2rem;

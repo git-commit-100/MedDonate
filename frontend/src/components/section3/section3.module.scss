@@ -1,0 +1,55 @@
+@use "../../index.scss";
+
+.section3-div {
+  width: 100%;
+  height: 100%;
+  @include index.flex-row;
+  justify-content: space-between;
+
+  img {
+    width: 38rem;
+    height: 38rem;
+    object-fit: cover;
+  }
+  .section3-info {
+    @include index.flex-col;
+    justify-content: flex-start;
+    row-gap: 3rem;
+  }
+
+  .section3-header {
+    font-size: 3.5rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: start;
+  }
+
+  .section3-desc {
+    color: index.$darkerGray;
+    font-weight: lighter;
+    line-height: 2rem;
+
+    word-spacing: 0.1rem;
+    font-size: 18px;
+    line-height: 2rem;
+    font-weight: lighter;
+    color: index.$darkerGray;
+  }
+  .section3-actions {
+    width: 100%;
+    @include index.flex-row;
+    justify-content: flex-start;
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      padding: 2rem 0;
+    }
+    .section3-info {
+      width: 100%;
+    }
+    img {
+      display: none;
+    }
+  }
+}

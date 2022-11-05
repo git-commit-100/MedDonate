@@ -1,0 +1,6 @@
+@use "../../index.scss";
+
+.footer-div {
+  color: index.$white;
+  @include index.flex-col;
+}

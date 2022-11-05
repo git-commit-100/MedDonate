@@ -27,9 +27,13 @@ function Button({
       }`}
       onClick={onClick}
     >
-      {Icon && iconAlignment === "left" && Icon}
+      {Icon && iconAlignment === "left" && (
+        <Icon className={styles["btn-icon"]} />
+      )}
       &nbsp;{text}&nbsp;
-      {Icon && iconAlignment === "right" && Icon}
+      {Icon && iconAlignment === "right" && (
+        <Icon className={styles["btn-icon"]} />
+      )}
     </button>
   );
 }
