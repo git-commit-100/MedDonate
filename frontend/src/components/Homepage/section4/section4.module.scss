@@ -1,0 +1,69 @@
+@use "../../../index.scss";
+
+.section4-div {
+  width: 100%;
+  height: 100%;
+  @include index.flex-row;
+  justify-content: space-between;
+
+  .section4-info {
+    width: 100%;
+    @include index.flex-col;
+    align-items: flex-start;
+    row-gap: 1rem;
+  }
+
+  .section4-header {
+    font-size: 3.5rem;
+    font-weight: bold;
+    width: 100%;
+    text-align: start;
+    row-gap: 3rem;
+  }
+  .section4-actions {
+    width: 100%;
+    @include index.flex-row;
+    justify-content: flex-start;
+  }
+  .section4-desc {
+    color: index.$darkerGray;
+    font-weight: lighter;
+    line-height: 2rem;
+
+    word-spacing: 0.1rem;
+    font-size: 18px;
+    line-height: 2rem;
+    font-weight: lighter;
+    color: index.$darkerGray;
+  }
+
+  .img-div {
+    width: 50%;
+    img {
+      width: 38rem;
+      height: 38rem;
+      object-fit: contain;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      flex-direction: column;
+    }
+    .section4-info {
+      width: 100%;
+      align-items: flex-start;
+      row-gap: 3rem;
+    }
+
+    .img-div {
+      width: 90%;
+      margin: 0 auto;
+      img {
+        width: 22rem;
+        height: 22rem;
+        object-fit: cover;
+      }
+    }
+  }
+}

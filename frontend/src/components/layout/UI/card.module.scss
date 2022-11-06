@@ -1,0 +1,8 @@
+@use "../../../index.scss";
+
+.card {
+  padding: 1rem;
+  @include index.boxShadow;
+  border-radius: 6px;
+  background-color: index.$white;
+}

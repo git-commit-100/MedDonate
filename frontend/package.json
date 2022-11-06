@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "react-icons": "^4.6.0",
+    "react-router-dom": "^6.4.3",
     "sass": "^1.55.0"
   }
 }

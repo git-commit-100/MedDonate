@@ -1,0 +1,67 @@
+@use "../../../index.scss";
+
+.section1-div {
+  width: 100%;
+  height: 100%;
+  @include index.flex-row;
+  justify-content: space-between;
+
+  .section1-info {
+    width: 50%;
+    @include index.flex-col;
+    justify-content: flex-start;
+    align-items: flex-start;
+    row-gap: 3rem;
+
+    .section1-header {
+      font-size: 3.5rem;
+      align-self: flex-start;
+      font-weight: bold;
+    }
+
+    .section1-desc {
+      font-weight: lighter;
+      color: index.$darkerGray;
+    }
+
+    .section1-actions {
+      width: 100%;
+      @include index.flex-row;
+      justify-content: flex-start;
+      column-gap: 3rem;
+    }
+  }
+
+  .img-div {
+    width: 50%;
+    @include index.flex-row;
+    justify-content: flex-end;
+    img {
+      width: 36rem;
+      height: 36rem;
+      object-fit: contain;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .section1-info {
+      width: 100%;
+    }
+
+    .img-div {
+      margin: 0 auto;
+      width: 90%;
+
+      img {
+        width: 22rem;
+        height: 22rem;
+        object-fit: cover;
+      }
+    }
+  }
+}

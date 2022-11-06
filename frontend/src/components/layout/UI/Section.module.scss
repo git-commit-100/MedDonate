@@ -1,0 +1,30 @@
+@use "../../../index.scss";
+
+.section {
+  width: 100vw;
+  padding: 1.5rem 3rem;
+  box-shadow: 0 0 5px 0 rgba($color: #000000, $alpha: 0.1);
+}
+
+.primary {
+  background-color: index.$lighterGreen;
+}
+
+.footer {
+  background-color: index.$darkGreen;
+}
+
+.secondary {
+  background-color: index.$white;
+}
+
+.full {
+  min-height: 90vh;
+  margin: auto;
+}
+
+@media screen and (max-width: 500px) {
+  .section {
+    padding: 2rem 0.5rem;
+  }
+}

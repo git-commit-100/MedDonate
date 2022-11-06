@@ -1,0 +1,66 @@
+@use "../../index.scss";
+
+.login-div {
+  width: 100%;
+  height: 100%;
+  padding: 0 1rem;
+  @include index.flex-row;
+  justify-content: space-between;
+
+  .img-div {
+    width: 40%;
+    img {
+      width: 30rem;
+      height: 30rem;
+      object-fit: cover;
+    }
+  }
+
+  .login-section,
+  .register-section {
+    width: 60%;
+  }
+
+  .login-card,
+  .register-card {
+    width: 100%;
+    @include index.flex-col;
+    row-gap: 1rem;
+  }
+
+  h3 {
+    color: index.$darkGreen;
+  }
+
+  form {
+    width: 100%;
+    @include index.flex-col;
+    row-gap: 1rem;
+
+    .form-actions {
+      width: 100%;
+      @include index.flex-row;
+      column-gap: 3rem;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    &{
+      flex-direction: column;
+      padding: 0;
+
+      .img-div, .login-section, .register-section{
+        width: 100%;
+      }
+
+      .img-div {
+        @include index.flex-row;
+        img{
+          width: 22rem;
+          height: 22rem;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+}

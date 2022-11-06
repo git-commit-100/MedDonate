@@ -6,6 +6,7 @@ import doctorMedicine from "./doctor-medicine.png";
 import nurse from "./nurse.png";
 import syringe from "./syringe.png";
 import logo from "./logo.png";
+import bg from "./bg.png";
 
 export const images = {
   ambulance,
@@ -16,4 +17,5 @@ export const images = {
   nurse,
   syringe,
   logo,
+  bg,
 };

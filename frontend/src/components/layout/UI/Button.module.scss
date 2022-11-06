@@ -1,0 +1,63 @@
+@use "../../../index.scss";
+
+.btn {
+  @include index.flex-row;
+  outline: 0;
+  font-size: 16px;
+  color: index.$white;
+  font-weight: bold;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  @include index.transition;
+  cursor: pointer;
+
+  .btn-icon {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+
+  &.sm {
+    padding: 1rem 2rem;
+  }
+
+  &.lg {
+    padding: 1.25rem 2.5rem;
+  }
+
+  &.primary {
+    border-color: index.$lightGreen;
+    background-color: index.$lightGreen;
+  }
+
+  &.primary:hover {
+    border-color: index.$darkGreen;
+    background-color: index.$darkGreen;
+  }
+
+  &.secondary {
+    color: index.$darkerGray;
+    border-color: index.$darkerGray;
+    background-color: index.$lightGray;
+  }
+
+  &.secondary:hover {
+    color: index.$darkerGray;
+    border-color: index.$darkerGray;
+    background-color: index.$darkGray;
+  }
+
+  &:disabled,
+  &:disabled:hover {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media screen and (max-width: 500px) {
+    &,
+    &.sm,
+    &.lg {
+      font-size: 14px;
+      padding: 1rem 1.5rem;
+    }
+  }
+}

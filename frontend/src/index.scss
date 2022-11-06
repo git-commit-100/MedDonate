@@ -47,6 +47,35 @@ $lightRed: #ffe6e6;
   }
 }
 
+@mixin fadeIn {
+  animation: fadeIn 1s ease-in-out;
+  overflow: hidden;
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin rotate360 {
+  animation: rotate360 0.5s ease-in;
+
+  @keyframes rotate360 {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
 @mixin boxShadow {
   box-shadow: 0 0 5px 2px rgba($color: $black, $alpha: 0.1);
 }
@@ -58,6 +87,15 @@ $lightRed: #ffe6e6;
   font-family: "Montserrat", sans-serif;
 }
 
-html{
+html {
+  width: 100vw;
   overflow-x: hidden;
+  overflow-y: auto;
+}
+
+// disable number step UI
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

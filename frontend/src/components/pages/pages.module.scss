@@ -1,0 +1,5 @@
+@use "../../index.scss";
+
+*{
+    @include index.fadeIn;
+}

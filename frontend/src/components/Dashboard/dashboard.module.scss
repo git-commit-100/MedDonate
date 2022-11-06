@@ -1,0 +1,66 @@
+@use "../../index.scss";
+
+.dashboard-div {
+  width: 100%;
+  height: 100%;
+  @include index.flex-col;
+  row-gap: 1rem;
+  background-image: url("../../assets/bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: cover;
+
+  h2 {
+    font-size: 2rem;
+    color: index.$darkGreen;
+  }
+
+  .dashboard {
+    width: 100%;
+    @include index.flex-row;
+    gap: 3rem;
+    flex-wrap: wrap;
+
+    .card {
+      @include index.flex-col;
+      row-gap: 1rem;
+      align-self: stretch;
+      justify-self: stretch;
+      width: 40%;
+      flex-grow: 1;
+      cursor: pointer;
+
+      .icon {
+        width: 5rem;
+        height: 5rem;
+        object-fit: contain;
+        color: index.$darkGreen;
+      }
+
+      h3 {
+        color: index.$darkGreen;
+      }
+
+      p {
+        color: index.$darkerGray;
+        word-spacing: 0.1rem;
+        font-size: 16px;
+        line-height: 2rem;
+        font-weight: lighter;
+      }
+
+      &:hover {
+        background-color: index.$lighterGreen;
+        .icon {
+          @include index.rotate360;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+        & {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

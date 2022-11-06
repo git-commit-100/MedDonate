@@ -1,0 +1,36 @@
+@use "../../../index.scss";
+
+
+.footer-div {
+  max-width: 100%;
+  color: index.$white;
+  @include index.flex-row;
+  justify-content: space-between;
+
+  .footer-left,
+  .footer-right {
+    @include index.flex-col;
+    align-items: flex-start;
+    row-gap: 1rem;
+  }
+
+  .social-div {
+    width: 50%;
+    @include index.flex-row;
+    justify-content: flex-start;
+    column-gap: 1rem;
+  }
+
+  a {
+    text-decoration: none;
+    color: index.$white;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    @include index.transition;
+    @include index.flex-row;
+  }
+
+  a:hover {
+    border-color: index.$white;
+  }
+}
