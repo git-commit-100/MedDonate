@@ -51,6 +51,9 @@
 
   // responsive queries
   @media screen and (max-width: 500px) {
+    & {
+      position: fixed;
+    }
     .nav {
       padding: 0.25rem 0.5rem;
       @include index.flex-col;

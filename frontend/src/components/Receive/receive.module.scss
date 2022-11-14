@@ -1,0 +1,180 @@
+@use "../../index.scss";
+
+.receive-div {
+  width: 100%;
+  height: 100%;
+  @include index.flex-col;
+
+  .receive-info {
+    width: 100%;
+    @include index.flex-row;
+
+    .receive-info-info,
+    .img-div {
+      width: 50%;
+    }
+
+    .receive-info-info {
+      @include index.flex-col;
+      row-gap: 1rem;
+      h1 {
+        font-size: 3.5rem;
+      }
+
+      h3 {
+        @include index.descText;
+      }
+    }
+
+    .img-div {
+      @include index.flex-row;
+      justify-content: flex-end;
+      img {
+        width: 36rem;
+        height: 36rem;
+        object-fit: contain;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      & {
+        flex-direction: column;
+        .receive-info-info {
+          width: 100%;
+        }
+
+        .img-div {
+          width: 100%;
+          img {
+            width: 22rem;
+            height: 22rem;
+            object-fit: contain;
+          }
+        }
+      }
+    }
+  }
+
+  .receive-main {
+    width: 100%;
+    @include index.flex-col;
+    row-gap: 2rem;
+
+    .receive-search-div {
+      width: 70%;
+
+      @media screen and (max-width: 500px) {
+        width: 100%;
+      }
+    }
+
+    .medicines-div {
+      width: 100%;
+
+      h3 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      ul {
+        width: 100%;
+        @include index.flex-col;
+        align-items: flex-start;
+
+        .no-med-found {
+          width: 98%;
+          margin: 1rem auto;
+          @include index.flex-col;
+          @include index.descText;
+
+          .info {
+            @include index.flex-row;
+            column-gap: 0.5rem;
+            font-size: 18px;
+            color: index.$darkRed;
+            margin: 1rem 0;
+          }
+
+          & > p {
+            font-style: italic;
+          }
+        }
+
+        li {
+          width: 100%;
+
+          .medicine-card {
+            width: 98%;
+            margin: 1rem auto;
+            @include index.flex-row;
+            justify-content: flex-start;
+            column-gap: 1rem;
+
+            .img-div {
+              width: 30%;
+              @include index.flex-row;
+
+              img {
+                width: 16rem;
+                height: 12rem;
+                object-fit: contain;
+                object-position: center;
+              }
+            }
+
+            .medicine-info {
+              width: 70%;
+              @include index.flex-col;
+              align-items: flex-start;
+              row-gap: 0.75rem;
+
+              p,
+              & > h4 > span {
+                @include index.descText;
+                font-size: 16px;
+              }
+
+              p {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 4;
+                overflow: hidden;
+              }
+
+              .actions-div {
+                width: 100%;
+                @include index.flex-row;
+                justify-content: flex-end;
+              }
+            }
+
+            @media screen and (max-width: 500px) {
+              & {
+                width: 100%;
+              }
+
+              & {
+                row-gap: 2rem;
+                .medicine-info,
+                .img-div {
+                  width: 100%;
+                }
+              }
+            }
+
+            @media screen and (max-width: 500px) {
+              & {
+                flex-direction: column;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      & {
+        width: 100%;
+      }
+    }
+  }
+}

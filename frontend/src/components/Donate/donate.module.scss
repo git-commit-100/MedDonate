@@ -94,11 +94,19 @@
         width: 100%;
         @include index.flex-row;
         justify-content: space-between;
+
+        // @media screen and (max-width: 500px) {
+        // & {
+        //   flex-direction: column;
+        //   align-items: flex-end;
+        //   row-gap: 1rem;
+        // }
+        // }
       }
 
       input[type="date"],
       select {
-        width: 30%;
+        width: 50%;
         height: 3rem;
         outline: none;
         font-size: 18px;
@@ -107,10 +115,6 @@
         border: 1px solid index.$darkerGray;
         background-color: index.$lightGray;
         @include index.transition;
-      }
-
-      select {
-        width: 50%;
       }
     }
 

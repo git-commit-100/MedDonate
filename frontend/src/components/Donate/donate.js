@@ -32,6 +32,13 @@ function Donate() {
   } = useInput((address) => address.trim() !== "");
 
   const {
+    value: cityInput,
+    handleInputChange: cityInputChange,
+    handleInputBlur: cityInputBlur,
+    hasError: hasCityError,
+  } = useInput((city) => city.trim() !== "");
+
+  const {
     value: NDCInput,
     handleInputChange: NDCInputChange,
     handleInputBlur: NDCInputBlur,
@@ -48,12 +55,6 @@ function Donate() {
   //DOM helpers
   const doeInput = document.getElementById("doe-input");
   const medType = document.getElementById("medType");
-  //   const cond1 = document.getElementById("cond1");
-  //   const cond2 = document.getElementById("cond2");
-  //   const cond3 = document.getElementById("cond3");
-  //   const cond4 = document.getElementById("cond4");
-
-  //   console.log(cond1.checked);
 
   let formValid =
     !hasNameError &&
@@ -61,11 +62,8 @@ function Donate() {
     !hasMedNameError &&
     !hasEmailError &&
     !hasAddressError &&
-    nameInput !== "" &&
-    emailInput !== "" &&
-    addressInput !== "" &&
-    NDCInput !== "" &&
-    medNameInput !== "" &&
+    !hasCityError &&
+    !!medType &&
     !!doeInput.value;
 
   function handleDonateMedicineForm(e) {
@@ -77,6 +75,7 @@ function Donate() {
           name: nameInput,
           address: addressInput,
           email: emailInput,
+          city: cityInput,
         },
         med: {
           ndc: NDCInput,
@@ -105,7 +104,7 @@ function Donate() {
         </div>
       </div>
 
-      <form action="POST">
+      <form action="POST" onSubmit={handleDonateMedicineForm}>
         <h1>Ready to Donate ?</h1>
         <h3>Medicines up for donation must meet ALL of these criteria</h3>
         <div className={styles["input-div"]}>
@@ -155,6 +154,19 @@ function Donate() {
             handleInputChange: emailInputChange,
             handleInputBlur: emailInputBlur,
             hasError: hasEmailError,
+          }}
+        />
+
+        <Input
+          label={"Your City Here"}
+          inputConfig={{ type: "text", autoComplete: "none" }}
+          required={true}
+          errorText={"City name cannot be empty"}
+          useInputHook={{
+            value: cityInput,
+            handleInputChange: cityInputChange,
+            handleInputBlur: cityInputBlur,
+            hasError: hasCityError,
           }}
         />
 
@@ -216,6 +228,19 @@ function Donate() {
               max={"2030-12-31"}
               htmlFor="date-input"
             />
+
+            {/* <Input
+              label={
+                "Date of Expiration(Expiration date must be 5 months out from current date.)"
+              }
+              errorText={"cannot be empty"}
+              required={true}
+              inputConfig={{
+                type: "date",
+                min: "2023-04-01",
+                max: "2040-12-31",
+              }}
+            /> */}
           </div>
 
           <div className={styles["input-div"]}>
@@ -237,7 +262,6 @@ function Donate() {
           text={"Donate"}
           className={styles["form-btn"]}
           size="lg"
-          onClick={handleDonateMedicineForm}
           disabled={!formValid}
           btnConfig={{ type: "submit" }}
         />
