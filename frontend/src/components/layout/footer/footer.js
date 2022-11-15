@@ -1,12 +1,18 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import styles from "./footer.module.scss";
-import Section from "../UI/Section";
 import { BsFacebook, BsInstagram, BsTwitter } from "react-icons/bs";
 import { IoMail } from "react-icons/io5";
+import { useContext } from "react";
+import { AppContext } from "../../../utils/store/appContext";
 
 function Footer() {
+  const { role } = useContext(AppContext);
   return (
-    <div className={styles["footer-div"]}>
+    <div
+      className={`${styles["footer-div"]} ${
+        role === "admin" ? styles["admin-footer"] : ""
+      }`}
+    >
       <div className={styles["footer-left"]}>
         <h3>MedDonate Inc.</h3>
         <a href="mailto:hello@medDonate.org">
@@ -28,4 +34,4 @@ function Footer() {
   );
 }
 
-export default Section(Footer, "footer", "footer");
+export default Footer;

@@ -1,6 +1,6 @@
 import { images } from "../../../assets/images";
 import styles from "./navbar.module.scss";
-import { BiHomeAlt, BiUserCircle, BiPhone, BiLogIn } from "react-icons/bi";
+import { BiHome, BiUserCircle, BiPhone, BiLogIn } from "react-icons/bi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../../../utils/store/appContext";
 import { useContext } from "react";
@@ -8,7 +8,7 @@ import { GoDashboard } from "react-icons/go";
 
 function Navbar() {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useContext(AppContext);
+  const { isLoggedIn, logout, role } = useContext(AppContext);
 
   function handleLogout() {
     let response = window.confirm("Are you sure you want to LOGOUT ??");
@@ -22,21 +22,27 @@ function Navbar() {
 
   return (
     <div className={styles["navbar"]}>
-      <nav className={styles["nav"]}>
+      <nav
+        className={`${styles["nav"]} ${
+          role === "admin" ? styles["admin-nav"] : ""
+        }`}
+      >
         <img
-          src={images.logo}
+          src={role === "admin" ? images.adminLogo : images.logo}
           alt="MedDonate"
           className={styles["navbar-logo"]}
         />
         <ul className={styles["nav-ul"]}>
-          <NavLink
-            className={`${styles["nav-item"]} ${({ isActive }) =>
-              isActive ? styles["active"] : ""}`}
-            to="/home"
-          >
-            <BiHomeAlt className={styles["icon"]} />
-            &nbsp;Home
-          </NavLink>
+          {role === "user" && (
+            <NavLink
+              className={`${styles["nav-item"]} ${({ isActive }) =>
+                isActive ? styles["active"] : ""}`}
+              to="/home"
+            >
+              <BiHome className={styles["icon"]} />
+              &nbsp;Home
+            </NavLink>
+          )}
 
           {!isLoggedIn && (
             <NavLink
@@ -71,7 +77,7 @@ function Navbar() {
             </NavLink>
           )}
 
-          {isLoggedIn && (
+          {isLoggedIn && role === "user" && (
             <NavLink
               className={`${styles["nav-item"]} ${({ isActive }) =>
                 isActive ? styles["active"] : ""}`}

@@ -42,9 +42,24 @@ function Login() {
       pass: LPInputValue,
     };
 
+    // admin login
+    const { email, pass, token } = loginFormObject;
+    if (email === "admin@medDonate.com" && pass === "admin123") {
+      ctx.login({
+        token: loginFormObject.token,
+        email: loginFormObject.email,
+        role: "admin",
+      });
+
+      navigate("/admin");
+
+      return;
+    }
+
     ctx.login({
-      token: loginFormObject.token,
-      email: loginFormObject.email,
+      token: token,
+      email: email,
+      role: "user",
     });
 
     // redirect user to index

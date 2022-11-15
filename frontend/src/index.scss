@@ -11,6 +11,8 @@ $darkGray: #e6e6e9;
 $darkerGray: #66666e;
 $darkRed: #cc0000;
 $lightRed: #ffe6e6;
+$adminBlue: #2191f7;
+$adminLightBlue: #d1e9ff;
 
 @mixin flex-row {
   display: flex;
@@ -72,6 +74,20 @@ $lightRed: #ffe6e6;
 
     100% {
       transform: rotate(360deg);
+    }
+  }
+}
+
+@mixin flipFlap {
+  animation: flipFlap 0.5s ease-in;
+
+  @keyframes flipFlap {
+    0% {
+      transform: rotateY(0deg);
+    }
+
+    100% {
+      transform: rotateY(360deg);
     }
   }
 }

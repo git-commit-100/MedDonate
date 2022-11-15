@@ -8,9 +8,10 @@ import { useContext } from "react";
 import Dashboard from "./components/pages/Dashboard";
 import Donate from "./components/pages/Donate";
 import Receive from "./components/pages/Receive";
+import Admin from "./components/Admin/Admin";
 
 function App() {
-  const { isLoggedIn } = useContext(AppContext);
+  const { isLoggedIn, role } = useContext(AppContext);
   return (
     <div className="App">
       <Navbar />
@@ -24,6 +25,15 @@ function App() {
           {isLoggedIn && <Route path="/recieve" element={<Receive />} />}
           {isLoggedIn && <Route path="/my-donations" element={null} />}
           {isLoggedIn && <Route path="/my-profile" element={null} />}
+          {isLoggedIn && role === "admin" && (
+            <Route path="/admin" element={<Admin />} />
+          )}
+          {isLoggedIn && role === "admin" && (
+            <Route path="/admin/receive" element={null} />
+          )}
+          {isLoggedIn && role === "admin" && (
+            <Route path="/admin/donations" element={null} />
+          )}
           <Route path="*" element={<Navigate replace to="/home" />} />
         </Routes>
       </main>

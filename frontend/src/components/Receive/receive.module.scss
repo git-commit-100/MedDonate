@@ -77,8 +77,10 @@
       }
       ul {
         width: 100%;
-        @include index.flex-col;
-        align-items: flex-start;
+        @include index.flex-row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        column-gap: 1rem;
 
         .no-med-found {
           width: 98%;
@@ -99,30 +101,29 @@
           }
         }
 
-        li {
-          width: 100%;
+        .medicine-item {
+          width: 49%;
 
           .medicine-card {
-            width: 98%;
+            width: 99%;
             margin: 1rem auto;
-            @include index.flex-row;
-            justify-content: flex-start;
-            column-gap: 1rem;
+            @include index.flex-col;
+            row-gap: 1rem;
 
             .img-div {
-              width: 30%;
+              width: 100%;
               @include index.flex-row;
 
               img {
                 width: 16rem;
                 height: 12rem;
-                object-fit: contain;
+                object-fit: cover;
                 object-position: center;
               }
             }
 
             .medicine-info {
-              width: 70%;
+              width: 100%;
               @include index.flex-col;
               align-items: flex-start;
               row-gap: 0.75rem;

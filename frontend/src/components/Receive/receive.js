@@ -94,8 +94,9 @@ function Receive() {
               <div className={styles["actions-div"]}>
                 <Button
                   Icon={BsArrowRight}
+                  //! btn onClick Function
                   onClick={() => {}}
-                  text={"I need this"}
+                  text={"View Details"}
                 ></Button>
               </div>
             </div>

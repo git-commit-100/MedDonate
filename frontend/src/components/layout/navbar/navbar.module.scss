@@ -47,6 +47,25 @@
         }
       }
     }
+
+    &.admin-nav {
+      .nav-ul {
+        padding-right: 1rem;
+        justify-content: flex-end;
+        .nav-item {
+          &:hover,
+          &:active {
+            color: index.$adminBlue;
+          }
+        }
+
+        @media screen and (max-width: 500px) {
+          & {
+            justify-content: center;
+          }
+        }
+      }
+    }
   }
 
   // responsive queries

@@ -15,7 +15,7 @@ function Section(Component, id, bg = "primary", full = false, className) {
           className ? `${className} ${styles["section"]}` : styles["section"]
         } ${full ? styles["full"] : ""} ${
           bg === "secondary" ? styles["secondary"] : styles["primary"]
-        } ${bg === "footer" ? styles["footer"] : ""}`}
+        }`}
       >
         <Component />
       </div>

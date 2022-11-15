@@ -1,11 +1,12 @@
 @use "../../../index.scss";
 
-
 .footer-div {
-  max-width: 100%;
+  width: 100%;
+  padding: 2rem 3rem;
   color: index.$white;
   @include index.flex-row;
   justify-content: space-between;
+  background-color: index.$darkGreen;
 
   .footer-left,
   .footer-right {
@@ -32,5 +33,15 @@
 
   a:hover {
     border-color: index.$white;
+  }
+
+  @media screen and (max-width: 500px) {
+    & {
+      padding: 2rem 1rem;
+    }
+  }  
+
+  &.admin-footer{
+    background-color: index.$adminBlue;
   }
 }
