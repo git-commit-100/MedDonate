@@ -46,10 +46,15 @@ function AppContextProvider({ children }) {
   }
 
   function logoutHandler() {
-    setToken(null);
-    setEmail(null);
-    setRole("user");
-    localStorage.removeItem("loginConfig");
+    if (isLoggedIn) {
+      const response = window.confirm("Are you sure you want to LOGOUT ?");
+      if (response) {
+        setToken(null);
+        setEmail(null);
+        setRole("user");
+        localStorage.removeItem("loginConfig");
+      }
+    }
   }
 
   const contextValue = {

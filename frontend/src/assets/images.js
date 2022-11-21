@@ -9,6 +9,9 @@ import logo from "./logo.png";
 import bg from "./bg.png";
 import adminLogo from "./admin-logo.png";
 import bgAdmin from "./bg-admin.png";
+import check from "./check.png";
+import warning from "./warning.png";
+import arrows from "./arrows.png";
 
 export const images = {
   ambulance,
@@ -22,4 +25,7 @@ export const images = {
   bg,
   adminLogo,
   bgAdmin,
+  check,
+  arrows,
+  warning,
 };

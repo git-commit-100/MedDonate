@@ -1,6 +1,6 @@
 @use "../../index.scss";
 
-.dashboard-div {
+.admin-dashboard-div {
   width: 100%;
   height: 60vh;
   @include index.flex-col;
@@ -15,7 +15,7 @@
     color: index.$adminBlue;
   }
 
-  .dashboard {
+  .admin-dashboard {
     width: 100%;
     @include index.flex-row;
     gap: 3rem;

@@ -8,10 +8,10 @@ import { BiDonateBlood, BiDonateHeart } from "react-icons/bi";
 function Admin() {
   const navigate = useNavigate();
   return (
-    <div className={styles["dashboard-div"]}>
-      <h2 className={styles["dahsboard-header"]}>Welcome, Admin</h2>
+    <div className={styles["admin-dashboard-div"]}>
+      <h2 className={styles["admin-dahsboard-header"]}>Welcome, Admin</h2>
 
-      <div className={styles["dashboard"]}>
+      <div className={styles["admin-dashboard"]}>
         <Card
           className={styles["card"]}
           onClick={() => navigate("/admin/donations")}

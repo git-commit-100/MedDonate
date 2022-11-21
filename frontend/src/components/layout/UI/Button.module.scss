@@ -10,6 +10,7 @@
   border-radius: 4px;
   @include index.transition;
   cursor: pointer;
+  text-align: center;
 
   .btn-icon {
     height: 1.25rem;
@@ -44,6 +45,17 @@
     color: index.$darkerGray;
     border-color: index.$darkerGray;
     background-color: index.$darkGray;
+  }
+
+  &.danger {
+    color: index.$white;
+    border-color: index.$darkRed;
+    background-color: index.$darkRed;
+  }
+
+  &.danger:hover {
+    border-color: index.$darkerRed;
+    background-color: index.$darkerRed;
   }
 
   &:disabled,

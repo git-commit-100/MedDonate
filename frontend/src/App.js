@@ -9,32 +9,49 @@ import Dashboard from "./components/pages/Dashboard";
 import Donate from "./components/pages/Donate";
 import Receive from "./components/pages/Receive";
 import Admin from "./components/Admin/Admin";
+import AdminDonations from "./components/Admin/Donations/AdminDonations";
+import AdminReceive from "./components/Admin/Receive/AdminReceive";
 
 function App() {
   const { isLoggedIn, role } = useContext(AppContext);
+  const user = role === "user";
   return (
     <div className="App">
       <Navbar />
       <main>
         <Routes>
-          <Route path="/home" element={<Homepage />} />
+          {user && <Route path="/home" element={<Homepage />} />}
+          {!isLoggedIn && <Route path="/login" element={<Login />} />}
+          {isLoggedIn && user && (
+            <Route path="/dashboard" element={<Dashboard />} />
+          )}
+          {isLoggedIn && user && <Route path="/donate" element={<Donate />} />}
+          {isLoggedIn && user && (
+            <Route path="/recieve" element={<Receive />} />
+          )}
+          {isLoggedIn && user && <Route path="/my-donations" element={null} />}
+          {isLoggedIn && user && <Route path="/my-profile" element={null} />}
+
+          {isLoggedIn && !user && <Route path="/admin" element={<Admin />} />}
+          {isLoggedIn && !user && (
+            <Route path="/admin/receive" element={<AdminReceive />} />
+          )}
+          {isLoggedIn && !user && (
+            <Route path="/admin/donations" element={<AdminDonations />} />
+          )}
+
           <Route path="/" element={<Navigate replace to="/home" />} />
-          <Route path="/login" element={<Login />} />
-          {isLoggedIn && <Route path="/dashboard" element={<Dashboard />} />}
-          {isLoggedIn && <Route path="/donate" element={<Donate />} />}
-          {isLoggedIn && <Route path="/recieve" element={<Receive />} />}
-          {isLoggedIn && <Route path="/my-donations" element={null} />}
-          {isLoggedIn && <Route path="/my-profile" element={null} />}
-          {isLoggedIn && role === "admin" && (
-            <Route path="/admin" element={<Admin />} />
+
+          {isLoggedIn && user && (
+            <Route path="*" element={<Navigate replace to="/dashboard" />} />
           )}
-          {isLoggedIn && role === "admin" && (
-            <Route path="/admin/receive" element={null} />
+          {isLoggedIn && !user && (
+            <Route path="*" element={<Navigate replace to="/admin" />} />
           )}
-          {isLoggedIn && role === "admin" && (
-            <Route path="/admin/donations" element={null} />
+
+          {!isLoggedIn && (
+            <Route path="*" element={<Navigate replace to="/home" />} />
           )}
-          <Route path="*" element={<Navigate replace to="/home" />} />
         </Routes>
       </main>
       <Footer />

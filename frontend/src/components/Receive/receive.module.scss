@@ -102,21 +102,19 @@
         }
 
         .medicine-item {
-          width: 49%;
+          width: 100%;
 
           .medicine-card {
             width: 99%;
             margin: 1rem auto;
-            @include index.flex-col;
-            row-gap: 1rem;
+            @include index.flex-row;
+            column-gap: 1rem;
 
             .img-div {
-              width: 100%;
+              width: 20%;
               @include index.flex-row;
 
               img {
-                width: 16rem;
-                height: 12rem;
                 object-fit: cover;
                 object-position: center;
               }
@@ -145,6 +143,7 @@
                 width: 100%;
                 @include index.flex-row;
                 justify-content: flex-end;
+                column-gap: 1rem;
               }
             }
 
@@ -155,9 +154,12 @@
 
               & {
                 row-gap: 2rem;
-                .medicine-info,
-                .img-div {
+                .medicine-info {
                   width: 100%;
+                }
+
+                .img-div {
+                  width: 50%;
                 }
               }
             }

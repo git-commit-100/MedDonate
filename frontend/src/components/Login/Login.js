@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import styles from "./Login.module.scss";
 import { images } from "../../assets/images";
 import Card from "../layout/UI/Card";
@@ -13,6 +13,12 @@ function Login() {
   const [wantToRegister, setWantToRegister] = useState(false);
   const ctx = useContext(AppContext);
   const navigate = useNavigate();
+
+  // when route ot login page, clear all loggedIn history
+  const { logout } = ctx;
+  useEffect(() => {
+    logout();
+  }, [logout]);
 
   // login form
   const {

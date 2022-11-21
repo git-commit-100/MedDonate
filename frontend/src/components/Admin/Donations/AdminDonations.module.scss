@@ -1,0 +1,148 @@
+@use "../../../index.scss";
+
+.donations-div {
+  width: 100%;
+  height: 100%;
+  @include index.flex-col;
+
+  .donations-info {
+    width: 100%;
+    @include index.flex-row;
+
+    h2 {
+      color: index.$adminBlue;
+    }
+
+    @media screen and (max-width: 500px) {
+      & {
+        flex-direction: column;
+      }
+    }
+  }
+
+  .donations-main {
+    width: 100%;
+    @include index.flex-col;
+    row-gap: 2rem;
+
+    .donations-search-div {
+      width: 70%;
+
+      @media screen and (max-width: 500px) {
+        width: 100%;
+      }
+    }
+
+    .medicines-div {
+      width: 100%;
+
+      h3 {
+        text-align: center;
+        margin-bottom: 1rem;
+      }
+      ul {
+        width: 100%;
+        @include index.flex-row;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        column-gap: 1rem;
+
+        .no-med-found {
+          width: 98%;
+          margin: 1rem auto;
+          @include index.flex-col;
+          @include index.descText;
+
+          .info {
+            @include index.flex-row;
+            column-gap: 0.5rem;
+            font-size: 18px;
+            color: index.$darkRed;
+            margin: 1rem 0;
+          }
+
+          & > p {
+            font-style: italic;
+          }
+        }
+
+        .medicine-item {
+          width: 100%;
+
+          .medicine-card {
+            width: 99%;
+            margin: 1rem auto;
+            @include index.flex-row;
+            column-gap: 1rem;
+
+            .img-div {
+              width: 20%;
+              @include index.flex-row;
+
+              img {
+                object-fit: cover;
+                object-position: center;
+              }
+            }
+
+            .medicine-info {
+              width: 100%;
+              @include index.flex-col;
+              align-items: flex-start;
+              row-gap: 0.75rem;
+
+              p,
+              & > h4 > span {
+                @include index.descText;
+                font-size: 16px;
+              }
+
+              p {
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 4;
+                overflow: hidden;
+              }
+
+              .actions-div {
+                width: 100%;
+                @include index.flex-row;
+                justify-content: flex-end;
+                column-gap: 1rem;
+              }
+            }
+
+            @media screen and (max-width: 500px) {
+              & {
+                width: 100%;
+              }
+
+              & {
+                row-gap: 2rem;
+                .medicine-info {
+                  width: 100%;
+                }
+
+                .img-div {
+                  width: 50%;
+                }
+              }
+            }
+
+            @media screen and (max-width: 500px) {
+              & {
+                flex-direction: column;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      & {
+        width: 100%;
+      }
+    }
+  }
+}

@@ -29,21 +29,25 @@
       justify-content: space-evenly;
 
       .nav-item {
-        @include index.flex-row;
-        cursor: pointer;
-        font-weight: bold;
-        color: index.$darkerGray;
-        @include index.transition;
-        text-decoration: none;
+        .link,
+        .active {
+          @include index.flex-row;
+          align-items: flex-end;
+          cursor: pointer;
+          font-weight: bold;
+          color: index.$darkerGray;
+          @include index.transition;
+          text-decoration: none;
+          column-gap: 0.15rem;
 
-        .icon {
-          height: 1.25rem;
-          width: 1.25rem;
-        }
-
-        &:hover,
-        &.active {
-          color: index.$lightGreen;
+          .icon {
+            height: 1.25rem;
+            width: 1.25rem;
+          }
+          &:hover,
+          &.active {
+            color: index.$lightGreen;
+          }
         }
       }
     }
@@ -52,10 +56,14 @@
       .nav-ul {
         padding-right: 1rem;
         justify-content: flex-end;
+        column-gap: 4rem;
         .nav-item {
-          &:hover,
-          &:active {
-            color: index.$adminBlue;
+          .link,
+          .active {
+            &:hover,
+            &.active {
+              color: index.$adminBlue;
+            }
           }
         }
 
