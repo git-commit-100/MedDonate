@@ -79,6 +79,20 @@ $adminLightBlue: #d1e9ff;
   }
 }
 
+@mixin rotate360Infinite {
+  animation: rotate360 1.2s linear infinite;
+
+  @keyframes rotate360 {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
 @mixin flipFlap {
   animation: flipFlap 0.5s ease-in;
 
