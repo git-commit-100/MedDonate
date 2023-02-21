@@ -26,7 +26,7 @@ function Dashboard() {
           </p>
         </Card>
 
-        <Card className={styles["card"]} onClick={() => navigate("/recieve")}>
+        <Card className={styles["card"]} onClick={() => navigate("/receive")}>
           <RiSyringeLine className={styles["icon"]} />
           <h3 className={styles["card-title"]}>Receive Medication</h3>
           <p className={styles["card-desc"]}>

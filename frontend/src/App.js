@@ -12,6 +12,7 @@ import Admin from "./components/Admin/Admin";
 import AdminDonations from "./components/Admin/Donations/AdminDonations";
 import AdminReceive from "./components/Admin/Receive/AdminReceive";
 import MyDonations from "./components/pages/My Donations";
+import Checkout from "./components/pages/Checkout";
 
 function App() {
   const { isLoggedIn, role } = useContext(AppContext);
@@ -28,10 +29,13 @@ function App() {
           )}
           {isLoggedIn && user && <Route path="/donate" element={<Donate />} />}
           {isLoggedIn && user && (
-            <Route path="/recieve" element={<Receive />} />
+            <Route path="/receive" element={<Receive />} />
           )}
           {isLoggedIn && user && (
             <Route path="/my-donations" element={<MyDonations />} />
+          )}
+          {isLoggedIn && user && (
+            <Route path="/checkout/:id" element={<Checkout />} />
           )}
           {isLoggedIn && user && <Route path="/my-profile" element={null} />}
 

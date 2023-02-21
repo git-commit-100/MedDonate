@@ -6,6 +6,7 @@ import Card from "../layout/UI/Card";
 import { BiBlock } from "react-icons/bi";
 import Button from "../layout/UI/Button";
 import { BsArrowRight } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const MEDICINES_OBJ = [
   {
@@ -38,6 +39,7 @@ const MEDICINES_OBJ = [
 ];
 
 function Receive() {
+  const navigate = useNavigate();
   const {
     value: searchInput,
     handleInputChange: searchInputChange,
@@ -95,7 +97,7 @@ function Receive() {
                 <Button
                   Icon={BsArrowRight}
                   //! btn onClick Function
-                  onClick={() => {}}
+                  onClick={() => navigate(`/checkout/${med.id}`)}
                   text={"View Details"}
                 ></Button>
               </div>

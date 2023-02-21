@@ -7,6 +7,9 @@ import { images } from "../../assets/images";
 
 // https://moef.gov.in/en/service/environment/waste-management/
 
+const nowDate = new Date();
+const dateFrom6Months = nowDate.setMonth(nowDate.getMonth() + 6).toString();
+
 function Donate() {
   const {
     value: nameInput,
@@ -52,6 +55,13 @@ function Donate() {
     hasError: hasMedNameError,
   } = useInput((med) => med.trim() !== "" && med.length > 2);
 
+  const {
+    value: numberInput,
+    handleInputChange: numberInputChange,
+    handleInputBlur: numberInputBlur,
+    hasError: hasNumberError,
+  } = useInput((number) => number.trim() !== "" && number.length > 9);
+
   //DOM helpers
   const doeInput = document.getElementById("doe-input");
   const medType = document.getElementById("medType");
@@ -62,6 +72,7 @@ function Donate() {
     !hasMedNameError &&
     !hasEmailError &&
     !hasAddressError &&
+    !hasNumberError &&
     !hasCityError &&
     !!medType &&
     !!doeInput.value;
@@ -76,6 +87,7 @@ function Donate() {
           address: addressInput,
           email: emailInput,
           city: cityInput,
+          phone: numberInput,
         },
         med: {
           ndc: NDCInput,
@@ -158,6 +170,19 @@ function Donate() {
         />
 
         <Input
+          label={"Your phone number here"}
+          inputConfig={{ type: "number", autoComplete: "none" }}
+          required={true}
+          errorText={"Please enter a valid phone number"}
+          useInputHook={{
+            value: numberInput,
+            handleInputChange: numberInputChange,
+            handleInputBlur: numberInputBlur,
+            hasError: hasNumberError,
+          }}
+        />
+
+        <Input
           label={"Your City Here"}
           inputConfig={{ type: "text", autoComplete: "none" }}
           required={true}
@@ -224,23 +249,10 @@ function Donate() {
               type={"date"}
               autoComplete="none"
               required
-              min={"2023-04-01"}
-              max={"2030-12-31"}
+              min={dateFrom6Months}
+              max={"2040-12-31"}
               htmlFor="date-input"
             />
-
-            {/* <Input
-              label={
-                "Date of Expiration(Expiration date must be 5 months out from current date.)"
-              }
-              errorText={"cannot be empty"}
-              required={true}
-              inputConfig={{
-                type: "date",
-                min: "2023-04-01",
-                max: "2040-12-31",
-              }}
-            /> */}
           </div>
 
           <div className={styles["input-div"]}>

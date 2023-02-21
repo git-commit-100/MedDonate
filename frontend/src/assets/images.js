@@ -12,6 +12,8 @@ import bgAdmin from "./bg-admin.png";
 import check from "./check.png";
 import warning from "./warning.png";
 import arrows from "./arrows.png";
+import maleProfile from "./male-profile.png";
+import femaleProfile from "./female-profile.png";
 
 export const images = {
   ambulance,
@@ -28,4 +30,6 @@ export const images = {
   check,
   arrows,
   warning,
+  maleProfile,
+  femaleProfile,
 };
