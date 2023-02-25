@@ -37,25 +37,35 @@
     @include index.flex-col;
     row-gap: 1rem;
 
+    .disclaimer {
+      @include index.descText;
+      line-height: normal;
+      font-size: 0.9rem;
+      padding: 1rem;
+    }
+
     .form-actions {
-      width: 100%;
+      width: 80%;
+      margin: 0 auto;
       @include index.flex-row;
       column-gap: 3rem;
     }
   }
 
   @media screen and (max-width: 500px) {
-    &{
+    & {
       flex-direction: column;
       padding: 0;
 
-      .img-div, .login-section, .register-section{
+      .img-div,
+      .login-section,
+      .register-section {
         width: 100%;
       }
 
       .img-div {
         @include index.flex-row;
-        img{
+        img {
           width: 22rem;
           height: 22rem;
           object-fit: contain;

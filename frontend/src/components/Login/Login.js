@@ -9,6 +9,8 @@ import useInput from "../../utils/hooks/useInput";
 import { AppContext } from "../../utils/store/appContext";
 import { useNavigate } from "react-router-dom";
 
+// const url = `https://api.dicebear.com/5.x/initials/svg?seed=${RNINputValue}`;
+
 function Login() {
   const [wantToRegister, setWantToRegister] = useState(false);
   const ctx = useContext(AppContext);
@@ -47,6 +49,8 @@ function Login() {
       email: LEInputValue,
       pass: LPInputValue,
     };
+
+    // make get req to db -> validate -> login
 
     // admin login
     const { email, pass, token } = loginFormObject;
@@ -105,15 +109,33 @@ function Login() {
     (pass) => pass.trim() !== "" && pass.length > 7 && pass === RPINputValue
   );
 
+  const {
+    value: RPNInputValue,
+    handleInputChange: RPNChangeHandler,
+    handleInputBlur: RPNBlurHandler,
+    hasError: RPNHasError,
+  } = useInput((phone) => phone.trim() !== "" && phone.length === 10);
+
+  const {
+    value: RAInputValue,
+    handleInputChange: RAChangeHandler,
+    handleInputBlur: RABlurHandler,
+    hasError: RAHasError,
+  } = useInput((address) => address.trim() !== "");
+
   let validRegisterForm =
     !RNHasError &&
     !REHasError &&
     !RPHasError &&
     !RP2HasError &&
+    !RPNHasError &&
+    !RAHasError &&
     RNINputValue !== "" &&
     REINputValue !== "" &&
     RPINputValue !== "" &&
-    RP2INputValue !== "";
+    RP2INputValue !== "" &&
+    RPNInputValue !== "" &&
+    RAInputValue !== "";
 
   function handleRegisterFormSubmit(e) {
     e.preventDefault();
@@ -121,10 +143,14 @@ function Login() {
       token: Math.random().toString(),
       name: RNINputValue,
       email: REINputValue,
-      pass: RPINputValue,
     };
 
-    ctx.login({ email: registerFormObj.email, token: registerFormObj.token });
+    // make post req to db -> validate -> login
+
+    ctx.login({
+      email: registerFormObj.email,
+      token: registerFormObj.token,
+    });
 
     // redirect user to index
     navigate("/dashboard");
@@ -225,6 +251,36 @@ function Login() {
               />
 
               <Input
+                label={"Enter your phone number"}
+                inputConfig={{ type: "number", autoComplete: "none" }}
+                useInputHook={{
+                  value: RPNInputValue,
+                  handleInputChange: RPNChangeHandler,
+                  handleInputBlur: RPNBlurHandler,
+                  hasError: RPNHasError,
+                }}
+                required={true}
+                errorText={"Please enter a valid phone number"}
+              />
+
+              <Input
+                label={"Enter your residence address"}
+                inputConfig={{
+                  type: "number",
+                  autoComplete: "none",
+                }}
+                useInputHook={{
+                  value: RAInputValue,
+                  handleInputChange: RAChangeHandler,
+                  handleInputBlur: RABlurHandler,
+                  hasError: RAHasError,
+                }}
+                required={true}
+                errorText={"Residence Address cannot be empty"}
+                textarea={true}
+              />
+
+              <Input
                 label={"Password"}
                 inputConfig={{ type: "password", autoComplete: "none" }}
                 useInputHook={{
@@ -249,6 +305,13 @@ function Login() {
                 required={true}
                 errorText={"Both passwords should match"}
               />
+
+              <p className={styles["disclaimer"]}>
+                By registering, I hereby declare that the information provided
+                above is accurate to the best of my knowledge. Should any
+                incorrect information have been recorded, I accept full
+                responsibility for any actions taken as a result.
+              </p>
 
               <div className={styles["form-actions"]}>
                 <Button

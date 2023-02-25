@@ -3,10 +3,10 @@ import React, { useState } from "react";
 export const AppContext = React.createContext({
   email: "",
   token: "",
-  isLoggedIn: false,
-  loginHandler: (loginConfig) => {},
-  logoutHandler: () => {},
   role: "user",
+  isLoggedIn: false,
+  loginHandler: (loginObj) => {},
+  logoutHandler: () => {},
 });
 
 function getDataFromLocalStorage() {
@@ -41,7 +41,11 @@ function AppContextProvider({ children }) {
 
     setToken(token);
     setEmail(email);
-    const newLoginConfig = { email: email, token: token, role: role };
+    const newLoginConfig = {
+      email: email,
+      token: token,
+      role: role,
+    };
     localStorage.setItem("loginConfig", JSON.stringify(newLoginConfig));
   }
 
@@ -58,6 +62,13 @@ function AppContextProvider({ children }) {
   }
 
   const contextValue = {
+    // user: {
+    //   email: email,
+    //   phone: "",
+    //   name: "",
+    //   profile: "",
+    //   address: "",
+    // },
     email: email,
     token: token,
     isLoggedIn: isLoggedIn,

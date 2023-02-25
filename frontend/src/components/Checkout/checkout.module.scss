@@ -3,37 +3,33 @@
 .checkout-div {
   h2 {
     font-size: 2rem;
-    color: #2d6a4f;
+    color: index.$darkGreen;
     text-align: center;
+    margin-bottom: 2rem;
   }
 
-  .medicine-div,
-  .user-div {
+  h3 {
+    @include index.descText;
+    font-size: 1rem;
+    border-bottom: 1px solid index.$darkGray;
+  }
+  .med-info-div {
     width: 99%;
     margin: 2rem auto;
     @include index.flex-row;
     column-gap: 1rem;
 
-    .img-div,
-    .user-img-div {
+    .img-div {
       width: 20%;
       @include index.flex-row;
 
-      img,
-      .icon {
+      img {
         object-fit: cover;
         object-position: center;
       }
-
-      .icon {
-        width: 50%;
-        height: 50%;
-        color: index.$darkGreen;
-      }
     }
 
-    .medicine-info,
-    .user-info {
+    .medicine-info {
       width: 100%;
       @include index.flex-col;
       align-items: flex-start;
@@ -44,12 +40,20 @@
         @include index.descText;
         font-size: 16px;
       }
-      //   p {
-      //     display: -webkit-box;
-      //     -webkit-box-orient: vertical;
-      //     -webkit-line-clamp: 4;
-      //     overflow: hidden;
-      //   }
+
+      p {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 4;
+        overflow: hidden;
+      }
+
+      .actions-div {
+        width: 100%;
+        @include index.flex-row;
+        justify-content: flex-end;
+        column-gap: 1rem;
+      }
     }
 
     @media screen and (max-width: 500px) {
@@ -75,23 +79,63 @@
       }
     }
   }
-  .actions-div {
-    width: 50%;
-    @include index.flex-col;
-    align-items: flex-end;
+
+  // user info div
+  .user-info-div {
+    width: 100%;
+    @include index.flex-row;
     justify-content: space-between;
-    row-gap: 2rem;
+    margin: 2rem auto;
+
+    .user-info {
+      width: 60%;
+      @include index.flex-row;
+      justify-content: space-between;
+      column-gap: 1rem;
+
+      .img-div {
+        width: 40%;
+
+        .img {
+          width: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .info-div {
+        width: 100%;
+        & > h4 > span {
+          @include index.descText;
+          font-size: 16px;
+        }
+
+        & > h4 {
+          & > .hidden {
+            background: rgb(255, 255, 255);
+            background: linear-gradient(
+              90deg,
+              rgba(255, 255, 255, 1) 0%,
+              rgba(185, 185, 185, 1) 50%,
+              rgba(255, 255, 255, 1) 100%
+            );
+            color: transparent;
+          }
+        }
+      }
+    }
+
+    .actions-div {
+      @include index.flex-col;
+      row-gap: 2rem;
+    }
   }
 
-  .hidden,
-  p.hidden {
-    color: transparent !important;
-    background: rgb(255, 255, 255);
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 1) 0%,
-      rgba(200, 200, 200, 1) 50%,
-      rgba(255, 255, 255, 1) 100%
-    );
+  .msg-div {
+    width: 100%;
+    margin: 2rem auto;
+    padding: 2rem;
+    @include index.descText;
+    font-size: 1rem;
+    background-color: index.$lighterGreen;
   }
 }
