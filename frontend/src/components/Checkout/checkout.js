@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./Checkout.module.scss";
+import styles from "./checkout.module.scss";
 import { useParams, useNavigate } from "react-router-dom";
 import { images } from "../../assets/images";
 import Button from "../layout/UI/Button";

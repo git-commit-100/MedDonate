@@ -1,4 +1,4 @@
-import Checkout from "../Checkout/Checkout";
+import checkout from "../Checkout/checkout.js";
 import Section from "../layout/UI/Section";
 
-export default Section(Checkout, "checkout", "secondary");
+export default Section(checkout, "checkout", "secondary");
