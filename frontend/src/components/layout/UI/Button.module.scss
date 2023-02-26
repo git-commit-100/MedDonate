@@ -25,6 +25,11 @@
     padding: 1.25rem 2.5rem;
   }
 
+  &.xs {
+    padding: 0.5rem 0.75rem;
+    font-size: 14px;
+  }
+
   &.primary {
     border-color: index.$lightGreen;
     background-color: index.$lightGreen;

@@ -27,7 +27,9 @@ function Button({
         className ? `${className} ${styles["btn"]}` : styles["btn"]
       } ${type === "secondary" ? styles["secondary"] : styles["primary"]}
         ${type === "danger" ? styles["danger"] : ""}
-      ${size === "lg" ? styles["lg"] : styles["sm"]}`}
+      ${size === "lg" ? styles["lg"] : styles["sm"]} ${
+        size === "xs" && styles["xs"]
+      }`}
       onClick={onClick}
       disabled={disabled}
     >

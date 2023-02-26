@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import styles from "./my-donations.module.scss";
 import { images } from "../../assets/images";
 import { BiBlock } from "react-icons/bi";
+import Button from "../layout/UI/Button";
 
 // query from db by email -> only visible with transactions from user email
 
 // query from db
-const DATABASE_RECORD = [
+const DATABASE_RECORD_FOR_DONATION = [
   {
     id: 1,
     userInfo: {
@@ -14,34 +15,99 @@ const DATABASE_RECORD = [
         name: "Bhargav Kashiya",
         phone: "+91 9175899936",
         email: "bhargavkashiya@gmail.com",
+        city: "Vasai",
       },
       receivedBy: {
         name: "Jimit Joshi",
         phone: "+91 8554609445",
         email: "jimit08joshi@gmail.com",
+        city: "Dahisar",
       },
     },
-    status: "received",
+    status: "pending",
+    orderStateFromDonation: "No",
+    orderStateFromReceiver: "No",
     medInfo: {
-      name: "Crocin 650",
+      medName: "Crocin 650",
       desc: "Crocin Cold & Flu Max Tablet 15's is ac combination medication used to treat common cold symptoms and allergies like sneezing, runny/stuffy nose, fever, headache, body pains, congestion, or watery eyes.",
       doe: "24/08/2030",
       quantity: 4,
-      city: "Vasai",
       img: "https://newassets.apollo247.com/pub/media/catalog/product/c/r/cro0023.jpg",
+      ndc: "584-4654-3435",
+    },
+  },
+  {
+    id: 2,
+    userInfo: {
+      donatedBy: {
+        name: "Bhargav Kashiya",
+        phone: "+91 9175899936",
+        email: "bhargavkashiya@gmail.com",
+        city: "Vasai",
+      },
+      receivedBy: {
+        name: "Yash Ramteke",
+        phone: "+91 8554609445",
+        email: "yashramteke@gmail.com",
+        city: "Andheri",
+      },
+    },
+    status: "received",
+    orderStateFromDonation: "Yes",
+    orderStateFromReceiver: "Yes",
+    medInfo: {
+      medName: "Zandu Sudarshan Tablet",
+      doe: "22/05/2023",
+      quantity: 3,
+      desc: "Zandu Sudarshan Ghanvati contains the goodness of Triphala, Haridra, Daruharidra, Kantakari, Karcura, Pippalimool, and more. Triphala protects the body from the threat of allergens and infections. This Ayurvedic formula restores the balance of the three prominent doshas and improves the body’s overall immunity response. It is formulated to encourage the production of healthy immune system cells.",
+      img: "https://th.bing.com/th/id/OIP.bxH8G_9chHbPi9ibJ-z7wQHaHa?pid=ImgDet&rs=1",
+      ndc: "976-5965-2445",
     },
   },
 ];
 
-function getData() {
-  // some query
+const DATABASE_RECORD_FOR_RECEIVE = [
+  {
+    id: 1,
+    userInfo: {
+      donatedBy: {
+        name: "Jimit Joshi",
+        phone: "+91 8554609445",
+        email: "jimit08joshi@gmail.com",
+        city: "Dahisar",
+      },
+      receivedBy: {
+        name: "Bhargav Kashiya",
+        phone: "+91 9175899936",
+        email: "bhargavkashiya@gmail.com",
+        city: "Vasai",
+      },
+    },
+    status: "received",
+    orderStateFromDonation: "No",
+    orderStateFromReceiver: "Yes",
+    medInfo: {
+      medName: "Abhumka’s StonOff",
+      doe: "22/05/2023",
+      quantity: 1,
+      desc: "Abhumka's StonOff capsules manage Kidney, Urinary Bladder & Urinary Tract stones StonOff capsule is long researched secret formula based on Indian tribal’s traditional herbal knowledge which is tried, tested and trusted for thousands of years. It contains purified extracts of 5 beneficial herbs and the synergistic effect of all these herbs promote better health of kidney, urinary tract and urinary bladder and also helps in flushing of salt deposition through urine from these regions.",
+      img: "https://4.imimg.com/data4/LS/IR/MY-1363963/herbal-treatment-for-kidney-stone.jpg",
+      ndc: "945-5643-8463",
+    },
+  },
+];
+
+function getData(pageState, data) {
+  // some query to fetch data
   // after getting data, mapping to UI
-  return DATABASE_RECORD.map((record) => {
+  return data.map((record) => {
     const {
       id,
       medInfo,
       status,
       userInfo: { donatedBy, receivedBy },
+      orderStateFromDonation,
+      orderStateFromReceiver,
     } = record;
 
     //get image as per status
@@ -81,6 +147,52 @@ function getData() {
               {receivedBy.email ? receivedBy.email : "NULL"}
             </p>
           </div>
+          <div className={styles["order-state"]}>
+            {pageState === "donate" && (
+              <>
+                <p
+                  className={
+                    orderStateFromDonation === "No"
+                      ? styles["no"]
+                      : styles["yes"]
+                  }
+                >
+                  {orderStateFromDonation}
+                </p>
+                {orderStateFromDonation === "No" && (
+                  <Button
+                    text={"Change state ?"}
+                    size={"xs"}
+                    type={"secondary"}
+                    // initiate a update db query
+                    onClick={() => {}}
+                  ></Button>
+                )}
+              </>
+            )}
+            {pageState === "receive" && (
+              <>
+                <p
+                  className={
+                    orderStateFromReceiver === "No"
+                      ? styles["no"]
+                      : styles["yes"]
+                  }
+                >
+                  {orderStateFromReceiver}
+                </p>
+                {orderStateFromReceiver === "No" && (
+                  <Button
+                    text={"Change state ?"}
+                    size={"xs"}
+                    type={"secondary"}
+                    // initiate a update db query
+                    onClick={() => {}}
+                  ></Button>
+                )}
+              </>
+            )}
+          </div>
         </div>
 
         <details className={styles["med-details"]}>
@@ -90,7 +202,7 @@ function getData() {
               <img src={medInfo.img} alt="Medicine" />
             </div>
             <div className={styles["med-info-info"]}>
-              <p className={styles["name"]}>{medInfo.name}</p>
+              <p className={styles["name"]}>{medInfo.medName}</p>
               <p className={styles["desc"]}>{medInfo.desc}</p>
               <p className={styles["quantity"]}>
                 Quantity : {medInfo.quantity}
@@ -98,7 +210,7 @@ function getData() {
               <p className={styles["quantity"]}>
                 Date of Expriy: {medInfo.doe}
               </p>
-              <p className={styles["city"]}>City: {medInfo.city}</p>
+              <p className={styles["ndc"]}>NDC: {medInfo.ndc}</p>
             </div>
           </div>
         </details>
@@ -112,11 +224,12 @@ function MyDonations() {
   const [queryRes, setQueryRes] = useState(null);
 
   useEffect(() => {
-    let queryData = getData();
     if (pageState === "donate") {
+      let queryData = getData(pageState, DATABASE_RECORD_FOR_DONATION);
       setQueryRes(queryData);
     } else {
-      setQueryRes(null);
+      let queryData = getData(pageState, DATABASE_RECORD_FOR_RECEIVE);
+      setQueryRes(queryData);
     }
   }, [pageState]);
 
@@ -153,8 +266,13 @@ function MyDonations() {
             <div className={styles["table"]}>
               <div className={styles["table-header"]}>
                 <h3>Donated By</h3>
-                <h3>Status</h3>
-                <h3>Received By</h3>
+                <h3 className={styles["status-header"]}>Status</h3>
+                <h3 className={styles["received-header"]}>Received By</h3>
+                <h3 className={styles["state-header"]}>
+                  {pageState === "donate"
+                    ? "Dispatched (Yes/No)"
+                    : "Received (Yes/No)"}
+                </h3>
               </div>
 
               <div className={styles["table-main"]}>{queryRes}</div>
