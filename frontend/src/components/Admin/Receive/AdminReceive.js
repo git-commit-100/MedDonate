@@ -2,6 +2,8 @@ import React from "react";
 import Section from "../../layout/UI/Section";
 import styles from "./AdminReceive.module.scss";
 import { images } from "../../../assets/images";
+import Button from "../../layout/UI/Button";
+import { MdOutlineCancel, MdCheckCircleOutline } from "react-icons/md";
 
 // query from db
 const DATABASE_RECORD = [
@@ -12,70 +14,58 @@ const DATABASE_RECORD = [
         name: "Bhargav Kashiya",
         phone: "+91 9175899936",
         email: "bhargavkashiya@gmail.com",
+        city: "Vasai",
       },
       receivedBy: {
         name: "Jimit Joshi",
         phone: "+91 8554609445",
         email: "jimit08joshi@gmail.com",
+        city: "Dahisar",
+        prescription:
+          "https://th.bing.com/th/id/OIP.0zbt5gPrxwHAXjoWTrZL2AHaJ4?pid=ImgDet&rs=1",
       },
     },
-    status: "received",
+    status: "pending",
+    orderStateFromDonation: "No",
+    orderStateFromReceiver: "No",
     medInfo: {
-      name: "Crocin 650",
+      medName: "Crocin 650",
       desc: "Crocin Cold & Flu Max Tablet 15's is ac combination medication used to treat common cold symptoms and allergies like sneezing, runny/stuffy nose, fever, headache, body pains, congestion, or watery eyes.",
       doe: "24/08/2030",
       quantity: 4,
-      city: "Vasai",
       img: "https://newassets.apollo247.com/pub/media/catalog/product/c/r/cro0023.jpg",
+      ndc: "584-4654-3435",
     },
   },
   {
     id: 2,
     userInfo: {
       donatedBy: {
+        name: "Bhargav Kashiya",
+        phone: "+91 9175899936",
+        email: "bhargavkashiya@gmail.com",
+        city: "Vasai",
+      },
+      receivedBy: {
         name: "Yash Ramteke",
-        phone: "+91 9443964783",
+        phone: "+91 8554609445",
         email: "yashramteke@gmail.com",
-      },
-      receivedBy: {
-        name: "",
-        phone: "",
-        email: "",
+        city: "Andheri",
+        prescription:
+          "https://runningadik.files.wordpress.com/2016/06/rx1stsourceblogspotcom.jpg?w=300&h=300",
       },
     },
-    status: "available",
+    status: "received",
+    orderStateFromDonation: "Yes",
+    orderStateFromReceiver: "Yes",
     medInfo: {
-      name: "Zandu Sudarshan Ghanvati",
-      desc: "Zandu Sudarshan Ghanvati contains the goodness of Triphala, Haridra, Daruharidra, Kantakari, Karcura, Pippalimool, and more. Triphala protects the body from the threat of allergens and infections. This Ayurvedic formula restores the balance of the three prominent doshas and improves the body’s overall immunity response. It is formulated to encourage the production of healthy immune system cells.",
-      doe: "20/08/2040",
+      medName: "Zandu Sudarshan Tablet",
+      doe: "22/05/2023",
       quantity: 3,
-      city: "Amdheri",
+      desc: "Zandu Sudarshan Ghanvati contains the goodness of Triphala, Haridra, Daruharidra, Kantakari, Karcura, Pippalimool, and more. Triphala protects the body from the threat of allergens and infections. This Ayurvedic formula restores the balance of the three prominent doshas and improves the body’s overall immunity response. It is formulated to encourage the production of healthy immune system cells.",
       img: "https://th.bing.com/th/id/OIP.bxH8G_9chHbPi9ibJ-z7wQHaHa?pid=ImgDet&rs=1",
+      ndc: "976-5965-2445",
     },
-  },
-  {
-    id: 3,
-    userInfo: {
-      donatedBy: {
-        name: "Prem Bhanushali",
-        phone: "+91 8898545754",
-        email: "prembhanushali@gmail.com",
-      },
-      receivedBy: {
-        name: "",
-        phone: "",
-        email: "",
-      },
-    },
-    medInfo: {
-      name: "Ambhuka's StonOff",
-      desc: "Abhumka's StonOff capsules manage Kidney, Urinary Bladder & Urinary Tract stones StonOff capsule is long researched secret formula based on Indian tribal’s traditional herbal knowledge which is tried, tested and trusted for thousands of years. It contains purified extracts of 5 beneficial herbs and the synergistic effect of all these herbs promote better health of kidney, urinary tract and urinary bladder and also helps in flushing of salt deposition through urine from these regions.",
-      quantity: 2,
-      doe: "30/05/2030",
-      city: "Borivali",
-      img: "https://4.imimg.com/data4/LS/IR/MY-1363963/herbal-treatment-for-kidney-stone.jpg",
-    },
-    status: "pending",
   },
 ];
 
@@ -125,20 +115,57 @@ const dataFromDb = DATABASE_RECORD.map((record) => {
             {receivedBy.email ? receivedBy.email : "NULL"}
           </p>
         </div>
+        <div className={styles["action"]}>
+          {status !== "received" && (
+            <>
+              <Button
+                text={"Approve"}
+                onClick={() => {}}
+                size={"xs"}
+                Icon={MdCheckCircleOutline}
+              />
+              <Button
+                text={"Reject"}
+                onClick={() => {}}
+                type={"danger"}
+                size={"xs"}
+                Icon={MdOutlineCancel}
+              />
+            </>
+          )}
+          {status === "received" && (
+            <p className={styles["approved"]}>Approved</p>
+          )}
+        </div>
       </div>
 
       <details className={styles["med-details"]}>
-        <summary>See Medicine Info</summary>
+        <summary>See Medicine Info and Prescription</summary>
         <div className={styles["med-info"]}>
-          <div className={styles["med-img"]}>
-            <img src={medInfo.img} alt="Medicine" />
+          <div className={styles["about-med"]}>
+            <div className={styles["med-img"]}>
+              <img src={medInfo.img} alt="Medicine" />
+            </div>
+            <div className={styles["med-info-info"]}>
+              <p className={styles["name"]}>{medInfo.name}</p>
+              <p className={styles["ndc"]}>NDC: {medInfo.ndc}</p>
+              <p className={styles["desc"]}>{medInfo.desc}</p>
+              <p className={styles["quantity"]}>
+                Quantity : {medInfo.quantity}
+              </p>
+              <p className={styles["quantity"]}>
+                Date of Expriy: {medInfo.doe}
+              </p>
+            </div>
           </div>
-          <div className={styles["med-info-info"]}>
-            <p className={styles["name"]}>{medInfo.name}</p>
-            <p className={styles["desc"]}>{medInfo.desc}</p>
-            <p className={styles["quantity"]}>Quantity : {medInfo.quantity}</p>
-            <p className={styles["quantity"]}>Date of Expriy: {medInfo.doe}</p>
-            <p className={styles["city"]}>City: {medInfo.city}</p>
+          <div className={styles["prescription"]}>
+            <div className={styles["prescription-img"]}>
+              <img src={receivedBy.prescription} alt="Prescription" />
+            </div>
+            <p>
+              Right-click on the prescription image, go to "Open Image in a new
+              Tab" to view it in full-screen
+            </p>
           </div>
         </div>
       </details>
@@ -156,8 +183,9 @@ function AdminReceive() {
         <div className={styles["table"]}>
           <div className={styles["table-header"]}>
             <h3>Donated By</h3>
-            <h3>Status</h3>
-            <h3>Received By</h3>
+            <h3 className={styles["status-header"]}>Status</h3>
+            <h3 className={styles["received-header"]}>Received By</h3>
+            <h3 className={styles["action-header"]}>Action?</h3>
           </div>
 
           <div className={styles["table-main"]}>{dataFromDb}</div>

@@ -8,11 +8,13 @@ import { FiLogIn } from "react-icons/fi";
 import useInput from "../../utils/hooks/useInput";
 import { AppContext } from "../../utils/store/appContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // const url = `https://api.dicebear.com/5.x/initials/svg?seed=${RNINputValue}`;
 
 function Login() {
   const [wantToRegister, setWantToRegister] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const ctx = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -44,37 +46,51 @@ function Login() {
 
   function handleLoginFormSubmit(e) {
     e.preventDefault();
+    // admin login
     const loginFormObject = {
       token: Math.random().toString(),
       email: LEInputValue,
       pass: LPInputValue,
     };
-
-    // make get req to db -> validate -> login
-
-    // admin login
     const { email, pass, token } = loginFormObject;
     if (email === "admin@medDonate.com" && pass === "admin123") {
       ctx.login({
-        token: loginFormObject.token,
-        email: loginFormObject.email,
+        token: token,
+        email: email,
         role: "admin",
       });
-
       navigate("/admin");
-
       return;
     }
 
-    ctx.login({
-      token: token,
-      email: email,
-      role: "user",
-    });
-
-    // redirect user to index
-    navigate("/dashboard");
+    // USER LOGIN
+    axios
+      .post("http://localhost:8080/user/login", {
+        email: LEInputValue,
+        password: LPInputValue,
+      })
+      .then(({ data, status }) => {
+        // validating response
+        if (data.email && data.id) {
+          ctx.login({
+            token: data.id,
+            email: data.email,
+            role: data.isAdmin ? "admin" : "user",
+          });
+          navigate("/dashboard");
+          return;
+        } else {
+          setErrorMsg(data);
+          return;
+        }
+      })
+      .catch((err) => console.log(err));
   }
+
+  const changeLoginToRegister = () => {
+    setErrorMsg("");
+    setWantToRegister((prevState) => !prevState);
+  };
 
   // register from
   const {
@@ -123,6 +139,13 @@ function Login() {
     hasError: RAHasError,
   } = useInput((address) => address.trim() !== "");
 
+  const {
+    value: RCInputValue,
+    handleInputChange: RCChangeHandler,
+    handleInputBlur: RCBlurHandler,
+    hasError: RCHasError,
+  } = useInput((city) => city.trim() !== "");
+
   let validRegisterForm =
     !RNHasError &&
     !REHasError &&
@@ -139,21 +162,33 @@ function Login() {
 
   function handleRegisterFormSubmit(e) {
     e.preventDefault();
-    const registerFormObj = {
-      token: Math.random().toString(),
-      name: RNINputValue,
-      email: REINputValue,
-    };
-
     // make post req to db -> validate -> login
+    axios
+      .post("http://localhost:8080/user/register", {
+        name: RNINputValue,
+        email: REINputValue,
+        password: RPINputValue,
+        address: RAInputValue,
+        city: RCInputValue,
+        phone_number: RPNInputValue,
+      })
+      .then(({ data }) => {
+        // validating response
+        if (data.email && data.id) {
+          ctx.login({
+            token: data.id,
+            email: data.email,
+            role: data.isAdmin ? "admin" : "user",
+          });
 
-    ctx.login({
-      email: registerFormObj.email,
-      token: registerFormObj.token,
-    });
-
-    // redirect user to index
-    navigate("/dashboard");
+          navigate("/dashboard");
+          return;
+        } else {
+          setErrorMsg(data);
+          return;
+        }
+      })
+      .catch((err) => console.log(err));
   }
 
   return (
@@ -201,11 +236,15 @@ function Login() {
                 errorText={"Please enter a password of 8 or more characters"}
               />
 
+              {!wantToRegister && errorMsg && (
+                <h4 className={styles["error-msg"]}>{errorMsg}</h4>
+              )}
+
               <div className={styles["form-actions"]}>
                 <Button
                   text={"Register"}
                   type="secondary"
-                  onClick={() => setWantToRegister(true)}
+                  onClick={changeLoginToRegister}
                 />
                 <Button
                   text={"Login"}
@@ -226,7 +265,11 @@ function Login() {
             <form action="POST">
               <Input
                 label={"Enter your name"}
-                inputConfig={{ type: "text", autoComplete: "none" }}
+                inputConfig={{
+                  type: "text",
+                  autoComplete: "none",
+                  name: "name",
+                }}
                 useInputHook={{
                   value: RNINputValue,
                   handleInputChange: RNChangeHandler,
@@ -239,7 +282,11 @@ function Login() {
 
               <Input
                 label={"Enter your email"}
-                inputConfig={{ type: "email", autoComplete: "none" }}
+                inputConfig={{
+                  type: "email",
+                  autoComplete: "none",
+                  name: "email",
+                }}
                 useInputHook={{
                   value: REINputValue,
                   handleInputChange: REChangeHandler,
@@ -252,7 +299,11 @@ function Login() {
 
               <Input
                 label={"Enter your phone number"}
-                inputConfig={{ type: "number", autoComplete: "none" }}
+                inputConfig={{
+                  type: "number",
+                  autoComplete: "none",
+                  name: "phone_number",
+                }}
                 useInputHook={{
                   value: RPNInputValue,
                   handleInputChange: RPNChangeHandler,
@@ -266,8 +317,9 @@ function Login() {
               <Input
                 label={"Enter your residence address"}
                 inputConfig={{
-                  type: "number",
+                  type: "text",
                   autoComplete: "none",
+                  name: "address",
                 }}
                 useInputHook={{
                   value: RAInputValue,
@@ -281,8 +333,29 @@ function Login() {
               />
 
               <Input
+                label={"Enter your city"}
+                inputConfig={{
+                  type: "text",
+                  autoComplete: "none",
+                  name: "city",
+                }}
+                useInputHook={{
+                  value: RCInputValue,
+                  handleInputChange: RCChangeHandler,
+                  handleInputBlur: RCBlurHandler,
+                  hasError: RCHasError,
+                }}
+                required={true}
+                errorText={"City name cannot be empty"}
+              />
+
+              <Input
                 label={"Password"}
-                inputConfig={{ type: "password", autoComplete: "none" }}
+                inputConfig={{
+                  type: "password",
+                  autoComplete: "none",
+                  name: "password",
+                }}
                 useInputHook={{
                   value: RPINputValue,
                   handleInputChange: RPChangeHandler,
@@ -313,11 +386,15 @@ function Login() {
                 responsibility for any actions taken as a result.
               </p>
 
+              {wantToRegister && errorMsg && (
+                <h4 className={styles["error-msg"]}>{errorMsg}</h4>
+              )}
+
               <div className={styles["form-actions"]}>
                 <Button
                   text={"Login"}
                   type="secondary"
-                  onClick={() => setWantToRegister(false)}
+                  onClick={changeLoginToRegister}
                 />
                 <Button
                   text={"Register"}

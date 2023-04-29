@@ -1,0 +1,109 @@
+@use "../../index.scss";
+
+.profile-div {
+  width: 100%;
+  @include index.flex-col;
+
+  h2.header {
+    color: index.$darkGreen;
+    text-align: center;
+  }
+
+  .profile-card {
+    width: 100%;
+    margin: 2rem 0;
+    @include index.flex-row;
+
+    .img-div {
+      width: 30%;
+
+      img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+    }
+
+    .user-info {
+      width: 70%;
+      @include index.flex-col;
+      font-size: 1.15rem;
+
+      .account-info,
+      .personal-info {
+        width: 100%;
+        @include index.flex-col;
+        align-items: flex-start;
+        row-gap: 0.5rem;
+
+        h4 {
+          margin: 1.5rem 0;
+          font-weight: bold;
+          font-size: 1.15rem;
+          color: index.$darkerGray;
+          border-bottom: 1px solid index.$darkerGray;
+        }
+
+        p {
+          color: index.$darkerGray;
+          font-weight: lighter;
+          @include index.flex-row;
+          column-gap: 0.5rem;
+
+          span {
+            color: index.$black;
+            font-weight: bold;
+          }
+        }
+      }
+
+      .account-info {
+        .password-div {
+          @include index.flex-row;
+          justify-content: flex-start;
+          column-gap: 0.5rem;
+
+          .pass {
+            @include index.flex-row;
+            column-gap: 1rem;
+            border: 1px solid index.$darkGray;
+            padding: 0.25rem 1rem;
+            border-radius: 6px;
+            color: index.$black;
+            font-weight: bold;
+
+            .icon-eye {
+              height: 1.5rem;
+              width: 1.5rem;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .actions-div {
+        width: 100%;
+        @include index.flex-row;
+        justify-content: end;
+      }
+    }
+  }
+
+  .edit-div {
+    margin: 2rem 0;
+    width: 70%;
+
+    h3 {
+      text-align: center;
+      color: index.$darkGreen;
+      margin: 1rem 0;
+    }
+
+    .actions-div {
+        margin: 1rem 0;
+      width: 100%;
+      @include index.flex-row;
+      justify-content: space-between;
+    }
+  }
+}

@@ -74,3 +74,10 @@
     }
   }
 }
+
+.error-msg {
+  color: index.$darkRed;
+  @include index.transition;
+  text-align: center;
+  padding: 1rem;
+}

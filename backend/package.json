@@ -10,10 +10,12 @@
   "author": "Bhargav Kashiya",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^3.2.4",
+    "sequelize": "^6.31.0"
   },
   "devDependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "nodemon": "^2.0.20"
   }

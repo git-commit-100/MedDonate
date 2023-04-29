@@ -19,7 +19,8 @@ function Input({
   useInputHook = {},
   textarea = false,
 }) {
-  const { value, hasError, handleInputChange, handleInputBlur } = useInputHook;
+  const { value, hasError, handleInputChange, handleInputBlur, defaultValue } =
+    useInputHook;
 
   return (
     <div className={styles["input-div"]}>
@@ -38,6 +39,7 @@ function Input({
           value={value}
           onChange={handleInputChange}
           onBlur={handleInputBlur}
+          defaultValue={defaultValue}
         />
       )}
       {textarea && (
