@@ -7,6 +7,8 @@ import { BiBlock } from "react-icons/bi";
 import Button from "../layout/UI/Button";
 import { BsArrowRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const MEDICINES_OBJ = [
   {
@@ -40,6 +42,7 @@ const MEDICINES_OBJ = [
 
 function Receive() {
   const navigate = useNavigate();
+  const [medicines, setMedicines] = useState([]);
   const {
     value: searchInput,
     handleInputChange: searchInputChange,
@@ -47,8 +50,19 @@ function Receive() {
     resetInput: resestSearch,
   } = useInput(() => {});
 
+  // get medicines from db
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/user/donate")
+      .then(({ data }) => {
+        setMedicines(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
   function getMedicines(filter) {
-    let medObj = [...MEDICINES_OBJ];
+    // let medObj = [...MEDICINES_OBJ];
+    let medObj = [...medicines];
 
     if (filter) {
       medObj = medObj.filter((ele) =>
@@ -82,16 +96,12 @@ function Receive() {
               <h4>{med.medName}</h4>
               <p>{med.desc}</p>
               <h4>
-                <span>Quantity :&nbsp;</span>
-                {med.quantity}
-              </h4>
-              <h4>
                 <span>Date of expiry:&nbsp;</span>
                 {med.doe}
               </h4>
               <h4>
                 <span>City:&nbsp;</span>
-                {med.city}
+                {med.UserId.city}
               </h4>
               <div className={styles["actions-div"]}>
                 <Button

@@ -94,6 +94,7 @@
         width: 100%;
         @include index.flex-row;
         justify-content: space-between;
+        padding: 0 1rem;
 
         // @media screen and (max-width: 500px) {
         // & {
@@ -105,6 +106,7 @@
       }
 
       input[type="date"],
+      input[type="file"],
       select {
         width: 50%;
         height: 3rem;

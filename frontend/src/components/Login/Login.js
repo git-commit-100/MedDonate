@@ -46,24 +46,8 @@ function Login() {
 
   function handleLoginFormSubmit(e) {
     e.preventDefault();
-    // admin login
-    const loginFormObject = {
-      token: Math.random().toString(),
-      email: LEInputValue,
-      pass: LPInputValue,
-    };
-    const { email, pass, token } = loginFormObject;
-    if (email === "admin@medDonate.com" && pass === "admin123") {
-      ctx.login({
-        token: token,
-        email: email,
-        role: "admin",
-      });
-      navigate("/admin");
-      return;
-    }
 
-    // USER LOGIN
+    //LOGIN
     axios
       .post("http://localhost:8080/user/login", {
         email: LEInputValue,
@@ -77,8 +61,16 @@ function Login() {
             email: data.email,
             role: data.isAdmin ? "admin" : "user",
           });
-          navigate("/dashboard");
-          return;
+
+          // admin/user routing
+          if (ctx.role === "admin") {
+            navigate("/admin");
+            return;
+          } else {
+            // user routing
+            navigate("/dashboard");
+            return;
+          }
         } else {
           setErrorMsg(data);
           return;

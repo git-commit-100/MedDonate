@@ -4,12 +4,20 @@ const sequelize = require("../utils/database");
 const User = sequelize.define("User", {
   id: {
     autoIncrement: true,
-    allowNull: false,
     type: DataTypes.INTEGER,
     primaryKey: true,
     unique: true,
   },
   isAdmin: {
+    // 1/0
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: 0,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  isLoggedIn: {
     // 1/0
     type: DataTypes.BOOLEAN,
     allowNull: false,
@@ -26,11 +34,10 @@ const User = sequelize.define("User", {
     },
   },
   email: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
     validate: {
-      isEmail: true,
       // is: "/^[a-zA-Z0-9.]+@[a-zA-Z0-9.]+.[a-zA-Z0-9.]+$/",
       notEmpty: true,
     },

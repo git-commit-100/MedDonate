@@ -4,40 +4,11 @@ import Input from "../layout/UI/Input";
 import useInput from "../../utils/hooks/useInput";
 import Button from "../layout/UI/Button";
 import { images } from "../../assets/images";
+import axios from "axios";
 
 // https://moef.gov.in/en/service/environment/waste-management/
 
 function Donate() {
-  const {
-    value: nameInput,
-    handleInputChange: nameInputChange,
-    handleInputBlur: nameInputBlur,
-    hasError: hasNameError,
-  } = useInput((name) => name.trim() !== "" && name.length > 2);
-
-  const {
-    value: emailInput,
-    handleInputChange: emailInputChange,
-    handleInputBlur: emailInputBlur,
-    hasError: hasEmailError,
-  } = useInput(
-    (email) => email.trim() !== "" && email.includes("@") && email.includes(".")
-  );
-
-  const {
-    value: addressInput,
-    handleInputChange: addressInputChange,
-    handleInputBlur: addressInputBlur,
-    hasError: hasAddressError,
-  } = useInput((address) => address.trim() !== "");
-
-  const {
-    value: cityInput,
-    handleInputChange: cityInputChange,
-    handleInputBlur: cityInputBlur,
-    hasError: hasCityError,
-  } = useInput((city) => city.trim() !== "");
-
   const {
     value: NDCInput,
     handleInputChange: NDCInputChange,
@@ -52,40 +23,50 @@ function Donate() {
     hasError: hasMedNameError,
   } = useInput((med) => med.trim() !== "" && med.length > 2);
 
+  const {
+    value: medDescInput,
+    handleInputChange: medDescInputChange,
+    handleInputBlur: medDescInputBlur,
+    hasError: hasMedDescError,
+  } = useInput((desc) => desc.trim() !== "");
+
+  const [image, setImage] = useState("");
+
   //DOM helpers
   const doeInput = document.getElementById("doe-input");
   const medType = document.getElementById("medType");
 
   let formValid =
-    !hasNameError &&
-    !hasNDCError &&
-    !hasMedNameError &&
-    !hasEmailError &&
-    !hasAddressError &&
-    !hasCityError &&
-    !!medType &&
-    !!doeInput.value;
+    !hasNDCError && !hasMedNameError && !!medType && !!doeInput.value;
 
   function handleDonateMedicineForm(e) {
     e.preventDefault();
 
     if (formValid) {
-      let donationFormObj = {
-        user: {
-          name: nameInput,
-          address: addressInput,
-          email: emailInput,
-          city: cityInput,
-        },
-        med: {
-          ndc: NDCInput,
-          medName: medNameInput,
-          doe: doeInput.value,
-          medType: medType.value,
-        },
-      };
+      // let donationFormObj = {
+      //   ndc: NDCInput,
+      //   medName: medNameInput,
+      //   doe: doeInput.value,
+      //   medType: medType.value,
+      //   medImg: image,
+      //   medDesc: medDescInput,
+      // };
 
-      console.log(donationFormObj);
+      let donationFormObj = new FormData();
+      donationFormObj.append("ndc", NDCInput);
+      donationFormObj.append("medName", medNameInput);
+      donationFormObj.append("doe", doeInput.value);
+      donationFormObj.append("medType", medType.value);
+      donationFormObj.append("medImg", image);
+      donationFormObj.append("medDesc", medDescInput);
+
+      // db request
+      axios
+        .post("http://localhost:8080/user/donate", donationFormObj)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
     }
   }
 
@@ -104,7 +85,11 @@ function Donate() {
         </div>
       </div>
 
-      <form action="POST" onSubmit={handleDonateMedicineForm}>
+      <form
+        action="POST"
+        onSubmit={handleDonateMedicineForm}
+        encType="multipart/form-data"
+      >
         <h1>Ready to Donate ?</h1>
         <h3>Medicines up for donation must meet ALL of these criteria</h3>
         <div className={styles["input-div"]}>
@@ -130,59 +115,6 @@ function Donate() {
           <input type={"checkbox"} required id="cond4" name="cond4" />
           <label htmlFor="cond4">Does not require refrigeration</label>
         </div>
-
-        <Input
-          label={"Your name here"}
-          inputConfig={{ type: "text", autoComplete: "none" }}
-          required={true}
-          errorText={"Name should be of 2 or more characters"}
-          useInputHook={{
-            value: nameInput,
-            handleInputChange: nameInputChange,
-            handleInputBlur: nameInputBlur,
-            hasError: hasNameError,
-          }}
-        />
-
-        <Input
-          label={"Your email here"}
-          inputConfig={{ type: "email", autoComplete: "none" }}
-          required={true}
-          errorText={"Please enter a valid email"}
-          useInputHook={{
-            value: emailInput,
-            handleInputChange: emailInputChange,
-            handleInputBlur: emailInputBlur,
-            hasError: hasEmailError,
-          }}
-        />
-
-        <Input
-          label={"Your City Here"}
-          inputConfig={{ type: "text", autoComplete: "none" }}
-          required={true}
-          errorText={"City name cannot be empty"}
-          useInputHook={{
-            value: cityInput,
-            handleInputChange: cityInputChange,
-            handleInputBlur: cityInputBlur,
-            hasError: hasCityError,
-          }}
-        />
-
-        <Input
-          label={"Your address here"}
-          inputConfig={{ type: "text", autoComplete: "none" }}
-          textarea={true}
-          required={true}
-          errorText={"Name should be of 2 or more characters"}
-          useInputHook={{
-            value: addressInput,
-            handleInputChange: addressInputChange,
-            handleInputBlur: addressInputBlur,
-            hasError: hasAddressError,
-          }}
-        />
 
         <h3>Medication Details</h3>
         <div className={styles["medicine-form"]}>
@@ -215,6 +147,32 @@ function Donate() {
           />
 
           <div className={styles["input-div"]}>
+            <label htmlFor="file-input">Upload your Medicine Image here</label>
+            <input
+              id="file-input"
+              type="file"
+              name="medImg"
+              required
+              autoComplete="none"
+              onChange={(e) => setImage(e.target.files[0])}
+            />
+          </div>
+
+          <Input
+            label={"Medication description"}
+            inputConfig={{ type: "text", autoComplete: "none" }}
+            required={true}
+            errorText={"Drug prescription cannot be empty"}
+            textarea={true}
+            useInputHook={{
+              value: medDescInput,
+              handleInputChange: medDescInputChange,
+              handleInputBlur: medDescInputBlur,
+              hasError: hasMedDescError,
+            }}
+          />
+
+          <div className={styles["input-div"]}>
             <label id="date-input">
               Date of Expiration(Expiration date must be 5 months out from
               current date.)
@@ -224,23 +182,10 @@ function Donate() {
               type={"date"}
               autoComplete="none"
               required
-              min={"2023-04-01"}
+              min={"2023-04-30"}
               max={"2030-12-31"}
               htmlFor="date-input"
             />
-
-            {/* <Input
-              label={
-                "Date of Expiration(Expiration date must be 5 months out from current date.)"
-              }
-              errorText={"cannot be empty"}
-              required={true}
-              inputConfig={{
-                type: "date",
-                min: "2023-04-01",
-                max: "2040-12-31",
-              }}
-            /> */}
           </div>
 
           <div className={styles["input-div"]}>
