@@ -21,7 +21,7 @@
   width: 68%;
   border-radius: 6px;
   background-color: index.$white;
-  box-shadow: 0 3px 10px rgb(index.$black / 0.2);
+  box-shadow: 0 3px 10px rgba($color: index.$black, $alpha: 0.2);
   padding: 1rem 2rem;
 }
 

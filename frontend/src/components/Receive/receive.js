@@ -9,36 +9,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-const MEDICINES_OBJ = [
-  {
-    id: 1,
-    medName: "Crocin 650",
-    doe: "22/05/2023",
-    quantity: 2,
-    desc: "Crocin Cold & Flu Max Tablet 15's is ac combination medication used to treat common cold symptoms and allergies like sneezing, runny/stuffy nose, fever, headache, body pains, congestion, or watery eyes.",
-    city: "Vasai",
-    img: "https://newassets.apollo247.com/pub/media/catalog/product/c/r/cro0023.jpg",
-  },
-  {
-    id: 2,
-    medName: "Zandu Sudarshan Tablet",
-    doe: "22/05/2023",
-    quantity: 3,
-    desc: "Zandu Sudarshan Ghanvati contains the goodness of Triphala, Haridra, Daruharidra, Kantakari, Karcura, Pippalimool, and more. Triphala protects the body from the threat of allergens and infections. This Ayurvedic formula restores the balance of the three prominent doshas and improves the body’s overall immunity response. It is formulated to encourage the production of healthy immune system cells.",
-    city: "Andheri",
-    img: "https://th.bing.com/th/id/OIP.bxH8G_9chHbPi9ibJ-z7wQHaHa?pid=ImgDet&rs=1",
-  },
-  {
-    id: 3,
-    medName: "Abhumka’s StonOff",
-    doe: "22/05/2023",
-    quantity: 1,
-    desc: "Abhumka's StonOff capsules manage Kidney, Urinary Bladder & Urinary Tract stones StonOff capsule is long researched secret formula based on Indian tribal’s traditional herbal knowledge which is tried, tested and trusted for thousands of years. It contains purified extracts of 5 beneficial herbs and the synergistic effect of all these herbs promote better health of kidney, urinary tract and urinary bladder and also helps in flushing of salt deposition through urine from these regions.",
-    city: "Borivali",
-    img: "https://4.imimg.com/data4/LS/IR/MY-1363963/herbal-treatment-for-kidney-stone.jpg",
-  },
-];
+import localImage from "../../utils/localImage";
 
 function Receive() {
   const navigate = useNavigate();
@@ -61,7 +32,6 @@ function Receive() {
   }, []);
 
   function getMedicines(filter) {
-    // let medObj = [...MEDICINES_OBJ];
     let medObj = [...medicines];
 
     if (filter) {
@@ -85,23 +55,24 @@ function Receive() {
         );
       }
     }
+
     return medObj.map((med) => {
       return (
         <li className={styles["medicine-item"]} key={med.id}>
           <Card className={styles["medicine-card"]}>
             <div className={styles["img-div"]}>
-              <img src={med.img} alt="medicine" />
+              <img src={localImage(med.medImg)} alt="medicine" />
             </div>
             <div className={styles["medicine-info"]}>
               <h4>{med.medName}</h4>
-              <p>{med.desc}</p>
+              <p>{med.medDesc}</p>
               <h4>
                 <span>Date of expiry:&nbsp;</span>
                 {med.doe}
               </h4>
               <h4>
                 <span>City:&nbsp;</span>
-                {med.UserId.city}
+                {med.donatingUserInfo.city}
               </h4>
               <div className={styles["actions-div"]}>
                 <Button

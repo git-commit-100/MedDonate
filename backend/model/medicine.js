@@ -54,20 +54,15 @@ const Medicine = sequelize.define("Medicine", {
   prescription: {
     type: DataTypes.TEXT,
   },
-  UserId: {
-    type: DataTypes.INTEGER,
+  adminApproveDonation: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: 0,
     validate: {
       notEmpty: true,
     },
-    references: {
-      model: "Users",
-      key: "id",
-    },
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE",
   },
-  adminApproved: {
+  adminApproveReceive: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: 0,

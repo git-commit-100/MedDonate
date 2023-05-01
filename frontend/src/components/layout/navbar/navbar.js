@@ -5,10 +5,21 @@ import { NavLink } from "react-router-dom";
 import { AppContext } from "../../../utils/store/appContext";
 import { useContext } from "react";
 import { GoDashboard } from "react-icons/go";
+import axios from "axios";
 
 function Navbar() {
-  const { isLoggedIn, logout, role } = useContext(AppContext);
+  const { isLoggedIn, logout, role, token } = useContext(AppContext);
   const user = role === "user";
+
+  const logoutHandler = (token) => {
+    axios
+      .post(`http://localhost:8080/user/logout/${token}`)
+      .then(() => {
+        // remove client side session
+        logout();
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div className={styles["navbar"]}>
@@ -90,7 +101,10 @@ function Navbar() {
           )}
 
           {isLoggedIn && (
-            <li className={styles["nav-item"]} onClick={() => logout()}>
+            <li
+              className={styles["nav-item"]}
+              onClick={() => logoutHandler(token)}
+            >
               <NavLink className={styles["link"]}>
                 <BiLogIn className={styles["icon"]} />
                 Logout

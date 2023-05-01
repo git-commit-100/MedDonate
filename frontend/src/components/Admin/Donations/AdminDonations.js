@@ -6,6 +6,7 @@ import Card from "../../layout/UI/Card";
 import { BiBlock } from "react-icons/bi";
 import Button from "../../layout/UI/Button";
 import Section from "../../layout/UI/Section";
+import {useNavigate} from "react-router-dom"
 
 //? docs and future scope
 // review medicine -> take to a page where form opens
@@ -43,6 +44,7 @@ const MEDICINES_OBJ = [
 ];
 
 function AdminDonations() {
+  const navigate = useNavigate();
   const {
     value: searchInput,
     handleInputChange: searchInputChange,
@@ -99,7 +101,7 @@ function AdminDonations() {
                 <Button
                   type="secondary"
                   text={"Review Medicine"}
-                  onClick={() => {}}
+                  onClick={() => {navigate("/admin/review-med")}}
                 />
               </div>
             </div>

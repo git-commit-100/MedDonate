@@ -1,6 +1,7 @@
 const User = require("../model/user");
 const Medicine = require("../model/medicine");
 const uploadImage = require("../utils/uploadImage");
+const { Op, and } = require("sequelize");
 
 // user registration
 const postRegisterUser = (req, res, next) => {
@@ -29,6 +30,11 @@ const postLoginUser = (req, res, next) => {
       if (user) {
         // check for password
         if (user.password === password) {
+          if (user.isLoggedIn === true) {
+            return res.send(
+              "User is already logged in. Logout from other accounts !"
+            );
+          }
           // update isLoggedIn in db
           user.isLoggedIn = true;
           return user.save().then(() => {
@@ -48,6 +54,23 @@ const postLoginUser = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
+// user logout
+const postLogoutUser = (req, res, next) => {
+  const { id } = req.params;
+
+  User.findOne({ where: { id: id } })
+    .then((user) => {
+      if (!user) {
+        return res.status(200).send("User not found !");
+      }
+      // logout
+      user.isLoggedIn = false;
+      return user.save();
+    })
+    .then(() => res.send("User logged out successfully"))
+    .catch((err) => res.send(err));
+};
+
 // user medicine donatio
 const postMedicineDonation = (req, res, next) => {
   const medImg = uploadImage(req, res);
@@ -61,7 +84,7 @@ const postMedicineDonation = (req, res, next) => {
     medImg,
     doe,
     ndc,
-    UserId: req.user.id,
+    donatingUser: req.user.id,
   })
     .then(() => {
       return res.send("Medicine inserted successfully");
@@ -69,40 +92,26 @@ const postMedicineDonation = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const mapMedicinesToUser = async () => {
-  // SUPERHUMAN LOGIC -> DO NOT TOUCH
-  const medicineArr = await Medicine.findAll({
-    where: { adminApproved: true },
-  });
-
-  const userKeys = [];
-  const medsWithUserDetails = [...medicineArr];
-
-  medicineArr.forEach((med) => {
-    const { UserId } = med;
-    userKeys.push(UserId);
-  });
-
-  const users = await User.findAll({ where: { id: userKeys } });
-
-  medicineArr.forEach((med, index) => {
-    const { UserId } = med;
-
-    if (UserId === users[index].id) {
-      medsWithUserDetails[index].UserId = users[index];
-    }
-  });
-
-  return medsWithUserDetails;
-};
-
 // get donated medicines
 const getDonatedMedicines = (req, res, next) => {
   // get meds -> only admin approved (1)
-
-  mapMedicinesToUser()
-    .then((dataArr) => {
-      return res.status(200).send(dataArr);
+  Medicine.findAll({
+    where: {
+      adminApproveDonation: true,
+      receivingUser: {
+        [Op.is]: null,
+      },
+    },
+    include: [
+      { model: User, as: "donatingUserInfo" },
+      { model: User, as: "receivingUserInfo" },
+    ],
+  })
+    .then((meds) => {
+      if (meds.length === 0) {
+        return res.status(200).send([]);
+      }
+      return res.status(200).send(meds);
     })
     .catch((err) => res.send(err));
 };
@@ -110,10 +119,97 @@ const getDonatedMedicines = (req, res, next) => {
 const getDonatedMedicinesOne = (req, res, next) => {
   const { medId } = req.params;
 
-  mapMedicinesToUser()
-    .then((dataArr) => {
-      // id is 1 -> index in arr is 0
-      return res.status(200).send(dataArr[medId - 1]);
+  Medicine.findOne({
+    where: {
+      adminApproveDonation: true,
+      id: medId,
+      receivingUser: {
+        [Op.is]: null,
+      },
+    },
+    include: [
+      { model: User, as: "donatingUserInfo" },
+      { model: User, as: "receivingUserInfo" },
+    ],
+  })
+    .then((med) => {
+      if (!med) {
+        return res.status(200).send(null);
+      }
+
+      return res.status(200).send(med);
+    })
+    .catch((err) => res.send(err));
+};
+
+const getReceivedMedicines = (req, res, next) => {
+  // get meds -> only admin approved (1)
+  Medicine.findAll({
+    where: {
+      adminApproveReceive: true,
+    },
+    include: [
+      { model: User, as: "donatingUserInfo" },
+      { model: User, as: "receivingUserInfo" },
+    ],
+  })
+    .then((meds) => {
+      if (meds.length === 0) {
+        return res.status(200).send("No such records");
+      }
+      return res.status(200).send(meds);
+    })
+    .catch((err) => res.send(err));
+};
+
+const postReceivedMedicines = (req, res, next) => {
+  const { medId } = req.params;
+  // logged in user
+  const { id } = req.user;
+
+  // get medicine
+  Medicine.findOne({ where: { id: medId } })
+    .then((med) => {
+      med.receivingUser = id;
+
+      return med.save();
+    })
+    .then(() => {
+      res.status(200).send("Medicine request successful");
+    })
+    .catch((err) => res.send(err));
+};
+
+// get user profile
+const getUserProfile = (req, res, next) => {
+  const { id } = req.user;
+
+  User.findOne({ where: { id: id } })
+    .then((user) => {
+      return res.status(200).send(user);
+    })
+    .catch((err) => res.send(err));
+};
+
+// post user profie -> updated changes
+const postUserProfile = (req, res, next) => {
+  const { id, name, email, password, phone_number, city, address } = req.body;
+
+  User.findOne({ where: { id: id } })
+    .then((user) => {
+      if (!user) {
+        return res.status(200).send("User not found");
+      }
+      user.name = name;
+      (user.email = email),
+        (user.password = password),
+        (user.phone_number = phone_number),
+        (user.city = city),
+        (user.address = address);
+      return user.save();
+    })
+    .then(() => {
+      return res.status(200).send("Profile updated successfully");
     })
     .catch((err) => res.send(err));
 };
@@ -124,4 +220,9 @@ module.exports = {
   postMedicineDonation,
   getDonatedMedicines,
   getDonatedMedicinesOne,
+  getReceivedMedicines,
+  postReceivedMedicines,
+  postLogoutUser,
+  getUserProfile,
+  postUserProfile
 };

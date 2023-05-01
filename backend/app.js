@@ -15,6 +15,8 @@ const PORT = process.env.PORT || 8080;
 
 //file import
 const userRouter = require("./routes/userRouter");
+const adminRouter = require("./routes/adminRouter");
+const Medicine = require("./model/medicine");
 
 // registering middlewares
 app.use("", cors());
@@ -36,9 +38,8 @@ app.use("/", (req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-
 app.use("/user", userRouter);
-
+app.use("/admin", adminRouter);
 
 // routes
 app.get("", (req, res, next) => {
@@ -48,6 +49,20 @@ app.get("", (req, res, next) => {
 // fallback route
 app.use("*", (req, res, next) => {
   res.status(404).json({ response: "Invalid route" });
+});
+
+// associations
+Medicine.belongsTo(User, {
+  foreignKey: "donatingUser",
+  onUpdate: "CASCADE",
+  onDelete: "CASCADE",
+  as: "donatingUserInfo",
+});
+Medicine.belongsTo(User, {
+  foreignKey: "receivingUser",
+  onUpdate: "CASCADE",
+  onDelete: "CASCADE",
+  as: "receivingUserInfo"
 });
 
 // driver
@@ -81,6 +96,16 @@ sequelize
           phone_number: "9175899936",
           city: "Vasai",
           address: "Abhilasha, Sai Nagar, Vasai west",
+        },
+        {
+          id: 3,
+          isAdmin: 0,
+          name: "Jimit",
+          email: "jimit@gmail.com",
+          password: "12345678",
+          phone_number: "8329021699",
+          city: "Dahisar",
+          address: "Abhilasha, Sai Nagar, Dahisar west",
         },
       ]);
     } else {
