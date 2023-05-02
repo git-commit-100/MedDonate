@@ -59,7 +59,13 @@ function Backdrop({ children, onClick }) {
   );
 }
 
-function Modal({ children, className, hideModal, closingButtonText, show }) {
+function Modal({
+  children,
+  className,
+  hideModal,
+  closingButtonText,
+  show,
+}) {
   return (
     <AnimatePresence>
       {show && (
@@ -74,11 +80,11 @@ function Modal({ children, className, hideModal, closingButtonText, show }) {
             exit="hidden"
           >
             <motion.div variants={modalContentVariant}>{children}</motion.div>
-            <Button
-              className={styles["closeBtn"]}
-              onClick={() => hideModal()}
-              text={closingButtonText}
-            />
+              <Button
+                className={styles["closeBtn"]}
+                onClick={() => hideModal()}
+                text={closingButtonText}
+              />
           </motion.div>
         </Backdrop>
       )}

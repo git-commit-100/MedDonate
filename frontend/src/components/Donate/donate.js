@@ -5,15 +5,16 @@ import useInput from "../../utils/hooks/useInput";
 import Button from "../layout/UI/Button";
 import { images } from "../../assets/images";
 import axios from "axios";
-
-// https://moef.gov.in/en/service/environment/waste-management/
+import Modal from "../layout/UI/Modal";
 
 function Donate() {
+  const [showModal, setShowModal] = useState(false);
   const {
     value: NDCInput,
     handleInputChange: NDCInputChange,
     handleInputBlur: NDCInputBlur,
     hasError: hasNDCError,
+    resetInput: NDCReset,
   } = useInput((ndc) => ndc.trim() !== "" && ndc.length > 9);
 
   const {
@@ -21,6 +22,7 @@ function Donate() {
     handleInputChange: medNameInputChange,
     handleInputBlur: medNameInputBlur,
     hasError: hasMedNameError,
+    resetInput: medNameReset,
   } = useInput((med) => med.trim() !== "" && med.length > 2);
 
   const {
@@ -28,6 +30,7 @@ function Donate() {
     handleInputChange: medDescInputChange,
     handleInputBlur: medDescInputBlur,
     hasError: hasMedDescError,
+    resetInput: medDescReset,
   } = useInput((desc) => desc.trim() !== "");
 
   const [image, setImage] = useState("");
@@ -35,23 +38,24 @@ function Donate() {
   //DOM helpers
   const doeInput = document.getElementById("doe-input");
   const medType = document.getElementById("medType");
+  const fileInput = document.getElementById("file-input");
 
   let formValid =
     !hasNDCError && !hasMedNameError && !!medType && !!doeInput.value;
+
+  function clearForm() {
+    NDCReset();
+    medNameReset();
+    medDescReset();
+    doeInput.value = "";
+    medType.value = "";
+    fileInput.value = "";
+  }
 
   function handleDonateMedicineForm(e) {
     e.preventDefault();
 
     if (formValid) {
-      // let donationFormObj = {
-      //   ndc: NDCInput,
-      //   medName: medNameInput,
-      //   doe: doeInput.value,
-      //   medType: medType.value,
-      //   medImg: image,
-      //   medDesc: medDescInput,
-      // };
-
       let donationFormObj = new FormData();
       donationFormObj.append("ndc", NDCInput);
       donationFormObj.append("medName", medNameInput);
@@ -64,7 +68,8 @@ function Donate() {
       axios
         .post("http://localhost:8080/user/donate", donationFormObj)
         .then((res) => {
-          console.log(res);
+          clearForm();
+          setShowModal(true);
         })
         .catch((err) => console.log(err));
     }
@@ -72,6 +77,24 @@ function Donate() {
 
   return (
     <div className={styles["donate-div"]}>
+      <Modal
+        show={showModal}
+        hideModal={() => setShowModal(false)}
+        closingButtonText={"Okay, got it"}
+        className={styles["modal"]}
+      >
+        <div className={styles["img-div"]}>
+          <img src={images.check} alt="check" className={styles["modal-img"]} />
+        </div>
+        <h2>Thank you for donating :)</h2>
+
+        <div className={styles["info"]}>
+          <h3>You can see latest status about your medicine in :</h3>
+          <h3 className={styles["cmd"]}>
+            Dashboard &gt; My Donations &gt; Donated by me
+          </h3>
+        </div>
+      </Modal>
       <div className={styles["donate-info"]}>
         <div className={styles["donate-info-info"]}>
           <h1>Donate your unused medications</h1>

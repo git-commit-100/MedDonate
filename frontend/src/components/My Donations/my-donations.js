@@ -3,220 +3,157 @@ import styles from "./my-donations.module.scss";
 import { images } from "../../assets/images";
 import { BiBlock } from "react-icons/bi";
 import Button from "../layout/UI/Button";
+import axios from "axios";
+import LocalImage from "../../utils/localImage";
+import { useNavigate } from "react-router-dom";
 
-// query from db by email -> only visible with transactions from user email
-
-// query from db
-const DATABASE_RECORD_FOR_DONATION = [
-  {
-    id: 1,
-    userInfo: {
-      donatedBy: {
-        name: "Bhargav Kashiya",
-        phone: "+91 9175899936",
-        email: "bhargavkashiya@gmail.com",
-        city: "Vasai",
-      },
-      receivedBy: {
-        name: "Jimit Joshi",
-        phone: "+91 8554609445",
-        email: "jimit08joshi@gmail.com",
-        city: "Dahisar",
-        prescription:
-          "https://th.bing.com/th/id/OIP.0zbt5gPrxwHAXjoWTrZL2AHaJ4?pid=ImgDet&rs=1",
-      },
-    },
-    approved: true,
-    status: "pending",
-    orderStateFromDonation: "No",
-    orderStateFromReceiver: "No",
-    medInfo: {
-      medName: "Crocin 650",
-      desc: "Crocin Cold & Flu Max Tablet 15's is ac combination medication used to treat common cold symptoms and allergies like sneezing, runny/stuffy nose, fever, headache, body pains, congestion, or watery eyes.",
-      doe: "24/08/2030",
-      quantity: 4,
-      img: "https://newassets.apollo247.com/pub/media/catalog/product/c/r/cro0023.jpg",
-      ndc: "584-4654-3435",
-    },
-  },
-  {
-    id: 2,
-    userInfo: {
-      donatedBy: {
-        name: "Bhargav Kashiya",
-        phone: "+91 9175899936",
-        email: "bhargavkashiya@gmail.com",
-        city: "Vasai",
-      },
-      receivedBy: {
-        name: "Yash Ramteke",
-        phone: "+91 8554609445",
-        email: "yashramteke@gmail.com",
-        city: "Andheri",
-        prescription:
-          "https://runningadik.files.wordpress.com/2016/06/rx1stsourceblogspotcom.jpg?w=300&h=300",
-      },
-    },
-    approved: true,
-    status: "received",
-    orderStateFromDonation: "Yes",
-    orderStateFromReceiver: "Yes",
-    medInfo: {
-      medName: "Zandu Sudarshan Tablet",
-      doe: "22/05/2023",
-      quantity: 3,
-      desc: "Zandu Sudarshan Ghanvati contains the goodness of Triphala, Haridra, Daruharidra, Kantakari, Karcura, Pippalimool, and more. Triphala protects the body from the threat of allergens and infections. This Ayurvedic formula restores the balance of the three prominent doshas and improves the body’s overall immunity response. It is formulated to encourage the production of healthy immune system cells.",
-      img: "https://th.bing.com/th/id/OIP.bxH8G_9chHbPi9ibJ-z7wQHaHa?pid=ImgDet&rs=1",
-      ndc: "976-5965-2445",
-    },
-  },
-];
-
-const DATABASE_RECORD_FOR_RECEIVE = [
-  {
-    id: 1,
-    userInfo: {
-      donatedBy: {
-        name: "Jimit Joshi",
-        phone: "+91 8554609445",
-        email: "jimit08joshi@gmail.com",
-        city: "Dahisar",
-      },
-      receivedBy: {
-        name: "Bhargav Kashiya",
-        phone: "+91 9175899936",
-        email: "bhargavkashiya@gmail.com",
-        city: "Vasai",
-        prescription:
-          "https://runningadik.files.wordpress.com/2016/06/rx1stsourceblogspotcom.jpg?w=300&h=300",
-      },
-    },
-    approved: true,
-    status: "received",
-    orderStateFromDonation: "No",
-    orderStateFromReceiver: "Yes",
-    medInfo: {
-      medName: "Abhumka’s StonOff",
-      doe: "22/05/2023",
-      quantity: 1,
-      desc: "Abhumka's StonOff capsules manage Kidney, Urinary Bladder & Urinary Tract stones StonOff capsule is long researched secret formula based on Indian tribal’s traditional herbal knowledge which is tried, tested and trusted for thousands of years. It contains purified extracts of 5 beneficial herbs and the synergistic effect of all these herbs promote better health of kidney, urinary tract and urinary bladder and also helps in flushing of salt deposition through urine from these regions.",
-      img: "https://4.imimg.com/data4/LS/IR/MY-1363963/herbal-treatment-for-kidney-stone.jpg",
-      ndc: "945-5643-8463",
-    },
-  },
-  {
-    id: 2,
-    userInfo: {
-      donatedBy: {
-        name: null,
-        phone: null,
-        email: null,
-        city: null,
-      },
-      receivedBy: {
-        name: "Bhargav Kashiya",
-        phone: "+91 9175899936",
-        email: "bhargavkashiya@gmail.com",
-        city: "Vasai",
-        prescription:
-          "https://runningadik.files.wordpress.com/2016/06/rx1stsourceblogspotcom.jpg?w=300&h=300",
-      },
-    },
-    approved: false,
-    status: "pending",
-    orderStateFromDonation: "No",
-    orderStateFromReceiver: "No",
-    medInfo: {
-      medName: "Zandu Sudarshan Tablet",
-      doe: "22/05/2023",
-      quantity: 3,
-      desc: "Zandu Sudarshan Ghanvati contains the goodness of Triphala, Haridra, Daruharidra, Kantakari, Karcura, Pippalimool, and more. Triphala protects the body from the threat of allergens and infections. This Ayurvedic formula restores the balance of the three prominent doshas and improves the body’s overall immunity response. It is formulated to encourage the production of healthy immune system cells.",
-      img: "https://th.bing.com/th/id/OIP.bxH8G_9chHbPi9ibJ-z7wQHaHa?pid=ImgDet&rs=1",
-      ndc: "976-5965-2445",
-    },
-  },
-];
+const changeOrderState = (orderId, type) => {
+  axios
+    .post(`http://localhost:8080/user/order-status/${orderId}/${type}`)
+    .then(() => {
+      console.log("Order status changed");
+      window.location.reload();
+    })
+    .catch((err) => console.log(err));
+};
 
 function getData(pageState, data) {
   // some query to fetch data
   // after getting data, mapping to UI
   return data.map((record) => {
-    const {
-      id,
-      medInfo,
-      status,
-      userInfo: { donatedBy, receivedBy },
-      orderStateFromDonation,
-      orderStateFromReceiver,
-      approved,
-    } = record;
+    const { id, order_dispatched, order_received, medInfo } = record;
 
     //get image as per status
-    let image = "";
-    if (status === "received") {
-      image = images.check;
-    } else if (status === "available") {
-      image = images.arrows;
+    let orderImage = "";
+    let adminImage = "";
+    if (order_received && order_dispatched) {
+      orderImage = images.check;
     } else {
-      image = images.warning;
+      orderImage = images.warning;
+    }
+
+    if (pageState === "donate") {
+      if (medInfo.adminApproveReceive) {
+        adminImage = images.check;
+      } else {
+        adminImage = images.warning;
+      }
+    } else {
+      if (medInfo.adminApproveDonation) {
+        adminImage = images.check;
+      } else {
+        adminImage = images.warning;
+      }
     }
 
     return (
       <div className={styles["table-row"]} key={id}>
         <div className={styles["user-info"]}>
           <div className={styles["donated-by"]}>
-            {approved ? (
+            {pageState === "donate" ? (
               <>
-                <p className={styles["name"]}>{donatedBy.name}</p>
-                <p className={styles["phone"]}>{donatedBy.phone}</p>
-                <p className={styles["email"]}>{donatedBy.email}</p>
+                <p className={styles["name"]}>
+                  {medInfo.donatingUserInfo.name}
+                </p>
+                <p className={styles["phone"]}>
+                  {medInfo.donatingUserInfo.phone_number}
+                </p>
+                <p className={styles["email"]}>
+                  {medInfo.donatingUserInfo.email}
+                </p>
               </>
             ) : (
-              <h4 className={styles["not-approved"]}>
-                Admin has not approved the donation yet !
-              </h4>
+              <>
+                {medInfo.adminApproveReceive ? (
+                  <>
+                    <p className={styles["name"]}>
+                      {medInfo.donatingUserInfo.name}
+                    </p>
+                    <p className={styles["phone"]}>
+                      {medInfo.donatingUserInfo.phone_number}
+                    </p>
+                    <p className={styles["email"]}>
+                      {medInfo.donatingUserInfo.email}
+                    </p>
+                  </>
+                ) : (
+                  <h4 className={styles["not-approved"]}>
+                    Admin has not approved the donation yet !
+                  </h4>
+                )}
+              </>
             )}
           </div>
           <div className={styles["status"]}>
-            {status && (
-              <>
-                <img src={image} alt="status" />
-                <p className={styles[status]}>{status}</p>
-              </>
-            )}
+            <img src={orderImage} alt="status" />
+            <p className={styles["status"]} style={{ width: "100%" }}>
+              {order_received && order_dispatched ? "Received" : "Pending"}
+            </p>
+          </div>
+          <div className={styles["status"]}>
+            <img src={adminImage} alt="status" />
+            <p className={styles["status"]} style={{ width: "100%" }}>
+              {pageState === "donate"
+                ? medInfo.adminApproveReceive
+                  ? "Approved"
+                  : "Waiting"
+                : medInfo.adminApproveDonation
+                ? "Approved"
+                : "Waiting"}
+            </p>
           </div>
           <div className={styles["received-by"]}>
-            {/* {approved ? ( */}
-            {/* <> */}
-            <p className={styles["name"]}>{receivedBy.name}</p>
-            <p className={styles["phone"]}>{receivedBy.phone}</p>
-            <p className={styles["email"]}>{receivedBy.email}</p>
-            {/* </> */}
-            {/* ) : ( */}
-            {/* <h4 className={styles["not-approved"]}> */}
-            {/* Admin has not approved the donation yet ! */}
-            {/* </h4> */}
-            {/* )} */}
+            {pageState === "receive" ? (
+              <>
+                <p className={styles["name"]}>
+                  {medInfo.receivingUserInfo.name}
+                </p>
+                <p className={styles["phone"]}>
+                  {medInfo.receivingUserInfo.phone_number}
+                </p>
+                <p className={styles["email"]}>
+                  {medInfo.receivingUserInfo.email}
+                </p>
+              </>
+            ) : (
+              <>
+                {medInfo.adminApproveDonation ? (
+                  <>
+                    <p className={styles["name"]}>
+                      {medInfo.receivingUserInfo.name}
+                    </p>
+                    <p className={styles["phone"]}>
+                      {medInfo.receivingUserInfo.phone_number}
+                    </p>
+                    <p className={styles["email"]}>
+                      {medInfo.receivingUserInfo.email}
+                    </p>
+                  </>
+                ) : (
+                  <h4 className={styles["not-approved"]}>
+                    Admin has not approved the donation yet !
+                  </h4>
+                )}
+              </>
+            )}
           </div>
           <div className={styles["order-state"]}>
             {pageState === "donate" && (
               <>
                 <p
                   className={
-                    orderStateFromDonation === "No"
-                      ? styles["no"]
-                      : styles["yes"]
+                    order_dispatched === false ? styles["no"] : styles["yes"]
                   }
                 >
-                  {orderStateFromDonation}
+                  {order_dispatched ? "Yes" : "No"}
                 </p>
-                {orderStateFromDonation === "No" && (
+                {order_dispatched === false && (
                   <Button
                     text={"Change state ?"}
                     size={"xs"}
                     type={"secondary"}
-                    // initiate a update db query
-                    onClick={() => {}}
+                    disabled={medInfo.adminApproveReceive ? false : true}
+                    onClick={() => changeOrderState(id, "dispatch")}
                   ></Button>
                 )}
               </>
@@ -225,21 +162,19 @@ function getData(pageState, data) {
               <>
                 <p
                   className={
-                    orderStateFromReceiver === "No"
-                      ? styles["no"]
-                      : styles["yes"]
+                    order_received === false ? styles["no"] : styles["yes"]
                   }
                 >
-                  {orderStateFromReceiver}
+                  {order_received ? "Yes" : "No"}
                 </p>
-                {orderStateFromReceiver === "No" && (
+                {order_received === false && (
                   <Button
                     text={"Change state ?"}
                     size={"xs"}
                     type={"secondary"}
-                    disabled={approved ? false : true}
+                    disabled={medInfo.adminApproveDonation ? false : true}
                     // initiate a update db query
-                    onClick={() => {}}
+                    onClick={() => changeOrderState(id, "receive")}
                   ></Button>
                 )}
               </>
@@ -248,34 +183,145 @@ function getData(pageState, data) {
         </div>
 
         <details className={styles["med-details"]}>
-          <summary>See Medicine Info and Prescription</summary>
+          <summary style={{ margin: "1rem 0" }}>
+            See Medicine Info and Prescription
+          </summary>
+          <h3>Medicine Information</h3>
           <div className={styles["med-info"]}>
             <div className={styles["about-med"]}>
               <div className={styles["med-img"]}>
-                <img src={medInfo.img} alt="Medicine" />
+                <img src={LocalImage(medInfo.medImg)} alt="Medicine" />
               </div>
               <div className={styles["med-info-info"]}>
-                <p className={styles["name"]}>{medInfo.name}</p>
-                <p className={styles["ndc"]}>NDC: {medInfo.ndc}</p>
-                <p className={styles["desc"]}>{medInfo.desc}</p>
-                <p className={styles["quantity"]}>
-                  Quantity : {medInfo.quantity}
+                <p className={styles["name"]}>
+                  Name : <span>{medInfo.medName}</span>
+                </p>
+                <p className={styles["ndc"]}>
+                  NDC : <span>{medInfo.ndc}</span>
+                </p>
+                <p className={styles["type"]}>
+                  Medicine Type : <span>{medInfo.medType}</span>
+                </p>
+                <p className={styles["description"]}>
+                  Medicine description : <span>{medInfo.medDesc}</span>
                 </p>
                 <p className={styles["quantity"]}>
-                  Date of Expriy: {medInfo.doe}
+                  Date of Expriy : <span>{medInfo.doe}</span>
                 </p>
               </div>
             </div>
-            <div className={styles["prescription"]}>
-              <div className={styles["prescription-img"]}>
-                <img src={receivedBy.prescription} alt="Prescription" />
+            {medInfo.prescription && (
+              <div className={styles["prescription"]}>
+                <div className={styles["prescription-img"]}>
+                  <img src={medInfo.prescription} alt="Prescription" />
+                </div>
+                <p>
+                  Right-click on the prescription image, go to "Open Image in a
+                  new Tab" to view it in full-screen
+                </p>
               </div>
-              <p>
-                Right-click on the prescription image, go to "Open Image in a
-                new Tab" to view it in full-screen
-              </p>
-            </div>
+            )}
           </div>
+          {pageState === "donate" && (
+            <>
+              <h3 style={{ margin: "1rem 0" }}>User Information</h3>
+              {medInfo.adminApproveReceive ? (
+                <div className={styles["user-info-div"]}>
+                  <div className={styles["user-info"]}>
+                    <div className={styles["img-div"]}>
+                      <img
+                        src={images.userAvatar}
+                        alt="profile"
+                        className={styles["img"]}
+                      />
+                    </div>
+                    <div className={styles["info-div"]}>
+                      <h4>
+                        <span>Name :&nbsp;</span>
+                        {medInfo.receivingUserInfo.name}
+                      </h4>
+                      <h4>
+                        <span>Ciry :&nbsp;</span>
+                        {medInfo.receivingUserInfo.city}
+                      </h4>
+                      <h4>
+                        <span>Email :&nbsp;</span>
+                        <a href={`mailto:${medInfo.receivingUserInfo.email}`}>
+                          {medInfo.receivingUserInfo.email}
+                        </a>
+                      </h4>
+                      <h4>
+                        <span>Phone :&nbsp;</span>
+                        <a
+                          href={`tel:${medInfo.receivingUserInfo.phone_number}`}
+                        >
+                          {`+91 ${medInfo.receivingUserInfo.phone_number}`}
+                        </a>
+                      </h4>
+                      <h4>
+                        <span>Address :&nbsp;</span>
+                        <p>{medInfo.receivingUserInfo.address}</p>
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <h4 className={styles["not-approved"]}>
+                  Admin has not approved the donation yet !
+                </h4>
+              )}
+            </>
+          )}
+          {pageState === "receive" && (
+            <>
+              <h3 style={{ margin: "1rem 0" }}>User Information</h3>
+              {medInfo.adminApproveDonation ? (
+                <div className={styles["user-info-div"]}>
+                  <div className={styles["user-info"]}>
+                    <div className={styles["img-div"]}>
+                      <img
+                        src={images.userAvatar}
+                        alt="profile"
+                        className={styles["img"]}
+                      />
+                    </div>
+                    <div className={styles["info-div"]}>
+                      <h4>
+                        <span>Name :&nbsp;</span>
+                        {medInfo.donatingUserInfo.name}
+                      </h4>
+                      <h4>
+                        <span>Ciry :&nbsp;</span>
+                        {medInfo.donatingUserInfo.city}
+                      </h4>
+                      <h4>
+                        <span>Email :&nbsp;</span>
+                        <a href={`mailto:${medInfo.donatingUserInfo.email}`}>
+                          {medInfo.donatingUserInfo.email}
+                        </a>
+                      </h4>
+                      <h4>
+                        <span>Phone :&nbsp;</span>
+                        <a
+                          href={`tel:${medInfo.donatingUserInfo.phone_number}`}
+                        >
+                          {`+91 ${medInfo.donatingUserInfo.phone_number}`}
+                        </a>
+                      </h4>
+                      <h4>
+                        <span>Address :&nbsp;</span>
+                        <p>{medInfo.donatingUserInfo.address}</p>
+                      </h4>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <h4 className={styles["not-approved"]}>
+                  Admin has not approved the donation yet !
+                </h4>
+              )}
+            </>
+          )}
         </details>
       </div>
     );
@@ -284,15 +330,27 @@ function getData(pageState, data) {
 
 function MyDonations() {
   const [pageState, setPageState] = useState("donate");
-  const [queryRes, setQueryRes] = useState(null);
+  const [queryRes, setQueryRes] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (pageState === "donate") {
-      let queryData = getData(pageState, DATABASE_RECORD_FOR_DONATION);
-      setQueryRes(queryData);
+      axios
+        .get("http://localhost:8080/user/donated-meds")
+        .then(({ data }) => {
+          let queryData = getData(pageState, data);
+          setQueryRes(queryData);
+        })
+        .catch((err) => console.log(err));
     } else {
-      let queryData = getData(pageState, DATABASE_RECORD_FOR_RECEIVE);
-      setQueryRes(queryData);
+      axios
+        .get("http://localhost:8080/user/received-meds")
+        .then(({ data }) => {
+          console.log(data);
+          let queryData = getData(pageState, data);
+          setQueryRes(queryData);
+        })
+        .catch((err) => console.log(err));
     }
   }, [pageState]);
 
@@ -325,11 +383,14 @@ function MyDonations() {
       <div className={styles["user-orders-div"]}>
         <div className={styles["orders-main"]}>
           {/* search box ??  */}
-          {!!queryRes && (
+          {queryRes.length > 0 && (
             <div className={styles["table"]}>
               <div className={styles["table-header"]}>
                 <h3>Donated By</h3>
-                <h3 className={styles["status-header"]}>Medicine Status</h3>
+                <h3 className={styles["status-header"]}>Order Status</h3>
+                <h3 className={styles["status-header"]}>
+                  Admin Approval Status
+                </h3>
                 <h3 className={styles["received-header"]}>Received By</h3>
                 <h3 className={styles["state-header"]}>
                   {pageState === "donate"
@@ -342,7 +403,7 @@ function MyDonations() {
             </div>
           )}
 
-          {queryRes === null && (
+          {queryRes.length === 0 && (
             <div className={styles["empty-result"]}>
               <h3>
                 <BiBlock className={styles["icon"]} />

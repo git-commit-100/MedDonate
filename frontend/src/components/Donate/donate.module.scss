@@ -131,3 +131,33 @@
     }
   }
 }
+
+.modal {
+  @include index.flex-col;
+
+  .img-div {
+    @include index.flex-row;
+    .modal-img {
+      height: 8rem;
+      width: 8rem;
+      object-fit: cover;
+    }
+  }
+
+  h2,
+  h3 {
+    color: index.$darkerGray;
+    font-weight: lighter;
+    margin: 0.25rem 0;
+    text-align: center;
+  }
+
+  .info {
+    margin: 1rem 0;
+    background-color: index.$lighterGreen;
+    padding: 1rem;
+    h3.cmd {
+      font-weight: bold;
+    }
+  }
+}

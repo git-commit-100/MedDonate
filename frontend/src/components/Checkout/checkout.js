@@ -37,7 +37,7 @@ function Checkout() {
         // display modal
         setShowCreateOrder(false);
         setModal(true);
-        setIsHidden(false);
+        // setIsHidden(false);
       })
       .catch((err) => console.log(err));
   };

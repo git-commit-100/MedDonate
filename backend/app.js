@@ -4,7 +4,8 @@ const app = express();
 const sequelize = require("./utils/database");
 const fileUpload = require("express-fileupload");
 const User = require("./model/user");
-const medicine = require("./model/medicine");
+const Medicine = require("./model/medicine");
+const Order = require("./model/order");
 const path = require("path");
 const rootDir = require("./utils/path");
 
@@ -16,7 +17,6 @@ const PORT = process.env.PORT || 8080;
 //file import
 const userRouter = require("./routes/userRouter");
 const adminRouter = require("./routes/adminRouter");
-const Medicine = require("./model/medicine");
 
 // registering middlewares
 app.use("", cors());
@@ -62,7 +62,19 @@ Medicine.belongsTo(User, {
   foreignKey: "receivingUser",
   onUpdate: "CASCADE",
   onDelete: "CASCADE",
-  as: "receivingUserInfo"
+  as: "receivingUserInfo",
+});
+Medicine.hasOne(Order, {
+  foreignKey: "medId",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+  as: "medInfo",
+});
+Order.belongsTo(Medicine, {
+  foreignKey: "medId",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+  as: "medInfo",
 });
 
 // driver

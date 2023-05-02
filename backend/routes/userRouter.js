@@ -13,6 +13,9 @@ const {
   postReceivedMedicines,
   getUserProfile,
   postUserProfile,
+  getUserDonatedMedicine,
+  getUserReceivedMedicine,
+  postChangeOrderState,
 } = require("../controller/userController");
 
 // route -> /user/register
@@ -23,6 +26,12 @@ router.post("/login", postLoginUser);
 
 // route -> /user/logout
 router.post("/logout/:id", postLogoutUser);
+
+// router -> /user/donated-meds
+router.get("/donated-meds", getUserDonatedMedicine);
+
+// router -> /user/received-meds
+router.get("/received-meds", getUserReceivedMedicine);
 
 // route -> /user/donate1
 router.get("/donate/:medId", getDonatedMedicinesOne);
@@ -44,5 +53,7 @@ router.get("/profile", getUserProfile);
 
 // route -> /user/profile
 router.post("/profile", postUserProfile);
+
+router.post("/order-status/:orderId/:type", postChangeOrderState);
 
 module.exports = router;

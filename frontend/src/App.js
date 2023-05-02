@@ -51,7 +51,10 @@ function App() {
               <Route path="/admin/receive" element={<AdminReceive />} />
             )}
             {isLoggedIn && !user && (
-              <Route path="/admin/review-med" element={<AdminReviewMeds />} />
+              <Route
+                path="/admin/review/:medId"
+                element={<AdminReviewMeds />}
+              />
             )}
             {isLoggedIn && !user && (
               <Route path="/admin/donations" element={<AdminDonations />} />
