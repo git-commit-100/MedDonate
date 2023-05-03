@@ -3,6 +3,7 @@ const Medicine = require("../model/medicine");
 const uploadImage = require("../utils/uploadImage");
 const { Op } = require("sequelize");
 const Order = require("../model/order");
+const moment = require("moment");
 
 const adminGetDonatedMedicines = (req, res) => {
   Medicine.findAll({
@@ -137,6 +138,31 @@ const adminDeleteUser = (req, res) => {
     .catch((err) => res.send(err));
 };
 
+// CRON JOB
+const clearReceivingUserDaily = (req, res) => {
+  const oneWeekInMilliseconds = 7 * 24 * 60 * 60 * 1000;
+
+  Medicine.update(
+    {
+      receivingUser: null,
+      adminApproveReceive: false,
+    },
+    {
+      where: {
+        updatedAt: {
+          [Op.lt]: new Date(Date.now() - oneWeekInMilliseconds), // gives 1 week date
+        },
+      },
+    }
+  )
+    .then((records) => {
+      console.log(`Updated ${records[0]} record(s)`);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 module.exports = {
   adminGetDonatedMedicines,
   adminGetReceivedMedicines,
@@ -148,4 +174,5 @@ module.exports = {
   adminGetUsers,
   adminCreateUser,
   adminDeleteUser,
+  clearReceivingUserDaily,
 };

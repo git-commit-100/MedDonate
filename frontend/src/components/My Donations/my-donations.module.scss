@@ -359,3 +359,14 @@ h4.not-approved {
     }
   }
 }
+
+.disclaimer {
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: index.$lightGray;
+  @include index.descText;
+
+  span {
+    font-weight: bold;
+  }
+}

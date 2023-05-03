@@ -363,6 +363,15 @@ function MyDonations() {
         {pageState === "donate" ? "donated" : "received"} medications
       </h2>
 
+      <div className={styles["disclaimer"]}>
+        We have a scheduler that runs every{" "}
+        <span>Sunday, At 12:00 AM&nbsp;</span>to verify if the received
+        medicines from MedDonate are being picked up physcially under{" "}
+        <span>7 days&nbsp;</span>from the time of order placement. If that's not
+        the case, the system will discard the receiving user so as to restrict
+        hoarding of medicines :)
+      </div>
+
       <div className={styles["switch-div"]}>
         <div
           className={`${styles["switch-div-nav"]} ${

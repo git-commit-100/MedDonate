@@ -8,6 +8,9 @@ const Medicine = require("./model/medicine");
 const Order = require("./model/order");
 const path = require("path");
 const rootDir = require("./utils/path");
+const cron = require("node-cron");
+const moment = require("moment");
+const { cronExp, functionCall } = require("./utils/scheduler");
 
 // requiring extra dependencies
 const cors = require("cors");
@@ -127,5 +130,7 @@ sequelize
   .then(() => {
     app.listen(PORT);
     console.log("\nConnected to db successfully 🟢");
+    // CRON schduler
+    cron.schedule(cronExp, functionCall);
   })
   .catch((err) => console.log(err));
