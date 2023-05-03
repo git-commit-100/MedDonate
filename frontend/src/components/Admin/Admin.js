@@ -39,7 +39,7 @@ function Admin() {
 
         <Card
           className={styles["card"]}
-          onClick={() => navigate("/admin/receive")}
+          onClick={() => navigate("/admin/users")}
         >
           <RiUserSettingsLine className={styles["icon"]} />
           <h3 className={styles["card-title"]}>Manage Users</h3>

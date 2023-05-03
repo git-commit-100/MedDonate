@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./checkout.module.scss";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "../layout/UI/Button";
@@ -7,6 +7,7 @@ import axios from "axios";
 import localImage from "../../utils/localImage";
 import { images } from "../../assets/images";
 import Modal from "../layout/UI/Modal.js";
+import { AppContext } from "../../utils/store/appContext";
 
 function Checkout() {
   const { id } = useParams();
@@ -15,6 +16,7 @@ function Checkout() {
   const [isHidden, setIsHidden] = useState(true);
   const [modal, setModal] = useState(false);
   const [showCreateOrder, setShowCreateOrder] = useState(true);
+  const ctx = useContext(AppContext);
 
   useEffect(() => {
     // initiate db query
@@ -32,7 +34,7 @@ function Checkout() {
 
   const createOrder = () => {
     axios
-      .post(`http://localhost:8080/user/receive/${dataObj.id}`)
+      .post(`http://localhost:8080/user/receive/${ctx.token}/${dataObj.id}`)
       .then(() => {
         // display modal
         setShowCreateOrder(false);

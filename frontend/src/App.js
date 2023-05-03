@@ -15,6 +15,7 @@ import MyDonations from "./components/pages/My Donations";
 import Checkout from "./components/pages/Checkout";
 import Profile from "./components/pages/Profile";
 import AdminReviewMeds from "./components/Admin/Donations/AdminReviewMeds";
+import AdminUsers from "./components/Admin/Users/AdminUsers";
 
 function App() {
   const { isLoggedIn, role } = useContext(AppContext);
@@ -45,7 +46,9 @@ function App() {
             {isLoggedIn && user && (
               <Route path="/my-profile" element={<Profile />} />
             )}
-
+            {isLoggedIn && !user && (
+              <Route path="/admin/users" element={<AdminUsers />} />
+            )}
             {isLoggedIn && !user && <Route path="/admin" element={<Admin />} />}
             {isLoggedIn && !user && (
               <Route path="/admin/receive" element={<AdminReceive />} />

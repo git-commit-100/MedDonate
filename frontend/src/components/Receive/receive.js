@@ -36,7 +36,7 @@ function Receive() {
 
     if (filter) {
       medObj = medObj.filter((ele) =>
-        ele.city.toLocaleLowerCase().includes(filter)
+        ele.donatingUserInfo.city.toLocaleLowerCase().includes(filter)
       );
       if (medObj.length === 0) {
         // meaning city is not available for donation
@@ -54,6 +54,19 @@ function Receive() {
           </Card>
         );
       }
+    }
+
+    if (medObj.length === 0) {
+      return (
+        <Card className={styles["no-med-found"]}>
+          <div className={styles["info"]}>
+            <BiBlock className={styles["icon"]} />
+            <p> No Medicines Found !</p>
+          </div>
+          <p>Currently, there are no medicines up for donation :(</p>
+          <p>Patience is bitter, but its fruit is sweet - Aristotle</p>
+        </Card>
+      );
     }
 
     return medObj.map((med) => {

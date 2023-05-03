@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "./donate.module.scss";
 import Input from "../layout/UI/Input";
 import useInput from "../../utils/hooks/useInput";
@@ -6,6 +6,7 @@ import Button from "../layout/UI/Button";
 import { images } from "../../assets/images";
 import axios from "axios";
 import Modal from "../layout/UI/Modal";
+import { AppContext } from "../../utils/store/appContext";
 
 function Donate() {
   const [showModal, setShowModal] = useState(false);
@@ -34,6 +35,7 @@ function Donate() {
   } = useInput((desc) => desc.trim() !== "");
 
   const [image, setImage] = useState("");
+  const ctx = useContext(AppContext);
 
   //DOM helpers
   const doeInput = document.getElementById("doe-input");
@@ -57,6 +59,7 @@ function Donate() {
 
     if (formValid) {
       let donationFormObj = new FormData();
+      donationFormObj.append("userId", ctx.token);
       donationFormObj.append("ndc", NDCInput);
       donationFormObj.append("medName", medNameInput);
       donationFormObj.append("doe", doeInput.value);

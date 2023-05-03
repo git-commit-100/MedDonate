@@ -1,0 +1,267 @@
+@use "../../../index.scss";
+
+.admin-users-div {
+  width: 100%;
+  @include index.flex-col;
+  row-gap: 1rem;
+
+  h2.title {
+    text-align: center;
+    color: index.$adminBlue;
+  }
+
+  .create-user {
+    align-self: flex-end;
+  }
+
+  .table {
+    padding: 1rem;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    grid-template-columns: repeat(3, 1fr);
+
+    .table-header {
+      width: 100%;
+      grid-row: 1 / 2;
+      grid-column: 1 / 5;
+      @include index.flex-row;
+      justify-content: space-between;
+      border-bottom: 1px solid index.$darkGray;
+      h3 {
+        width: 35%;
+        justify-self: center;
+        align-self: center;
+        color: index.$darkerGray;
+        font-weight: lighter;
+        margin-bottom: 0.25rem;
+      }
+
+      .user-header {
+        align-items: center;
+        text-align: center;
+      }
+
+      .action-header {
+        align-items: end;
+        text-align: end;
+      }
+    }
+
+    .table-main {
+      grid-row: 2 / 3;
+      grid-column: 1 / 5;
+      width: 100%;
+
+      .table-row {
+        width: 100%;
+        @include index.flex-col;
+        gap: 1rem;
+        border: 1px solid index.$darkGray;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        align-items: center;
+
+        &:nth-child(even) {
+          background-color: index.$lightGray;
+        }
+
+        details {
+          width: 100%;
+
+          .users-details {
+            margin: 1rem;
+            @include index.flex-col;
+            align-items: flex-start;
+            p {
+              color: index.$darkerGray;
+              margin: 0.5rem 0;
+
+              span {
+                color: index.$black;
+                font-weight: bold;
+              }
+            }
+          }
+        }
+
+        .user-info {
+          width: 100%;
+          @include index.flex-row;
+          justify-content: space-between;
+          column-gap: 0.5rem;
+
+          p {
+            color: index.$darkerGray;
+            margin: 1rem 0;
+
+            span {
+              color: index.$black;
+              font-weight: bold;
+            }
+          }
+
+          .img-div,
+          .user-summary,
+          .actions-div {
+            width: 33.33%;
+            height: auto;
+            @include index.flex-col;
+            flex-wrap: wrap;
+            row-gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            align-items: flex-start;
+          }
+
+          .actions-div {
+            align-items: flex-end;
+            text-align: end;
+          }
+
+          .img-div {
+            height: 100%;
+            width: 33.33%;
+            @include index.flex-row;
+            justify-content: flex-start;
+            img {
+              height: 6rem;
+              width: 5rem;
+              object-fit: cover;
+            }
+          }
+        }
+      }
+
+      .med-details {
+        align-self: flex-start;
+        cursor: pointer;
+
+        &[open] > summary ~ * {
+          @include index.fadeIn;
+        }
+
+        .med-info {
+          margin-top: 1.5rem;
+          width: 100%;
+          @include index.flex-col;
+          justify-content: space-between;
+          column-gap: 1rem;
+
+          .about-med {
+            width: 100%;
+            margin: 2rem 0;
+            @include index.flex-row;
+
+            .med-img {
+              width: 30%;
+              height: auto;
+
+              img {
+                width: 100%;
+                max-height: 8rem;
+                object-fit: contain;
+              }
+            }
+
+            .med-info-info {
+              width: 70%;
+              @include index.flex-col;
+              row-gap: 0.5rem;
+              align-items: flex-start;
+
+              .desc {
+                color: index.$darkerGray;
+                // text clamp
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+              }
+            }
+          }
+
+          .prescription {
+            width: 100%;
+            @include index.flex-row;
+
+            .prescription-img {
+              width: 30%;
+              height: auto;
+
+              img {
+                width: 100%;
+                max-height: 8rem;
+                object-fit: contain;
+              }
+            }
+
+            p {
+              @include index.descText;
+              word-spacing: normal;
+              font-size: 16px;
+              line-height: normal;
+              width: 70%;
+              text-align: start;
+            }
+          }
+        }
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      display: none;
+    }
+  }
+}
+
+.form-card {
+  margin: 0 auto;
+  @include index.flex-col;
+  width: 60%;
+  background-color: index.$lighterGreen;
+
+  h3 {
+    text-align: center;
+  }
+
+  form {
+    width: 100%;
+
+    .form-actions {
+      margin: 2rem 0;
+      width: 100%;
+      @include index.flex-row;
+      justify-content: space-between;
+    }
+  }
+}
+
+.modal {
+  @include index.flex-col;
+
+  .img-div {
+    @include index.flex-row;
+    .modal-img {
+      height: 8rem;
+      width: 8rem;
+      object-fit: cover;
+    }
+  }
+
+  h2,
+  h3 {
+    color: index.$darkerGray;
+    font-weight: lighter;
+    margin: 0.25rem 0;
+    text-align: center;
+  }
+
+  .info {
+    margin: 1rem 0;
+    background-color: index.$lighterGreen;
+    padding: 1rem;
+    h3.cmd {
+      font-weight: bold;
+    }
+  }
+}

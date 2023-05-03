@@ -40,10 +40,10 @@ function Dashboard() {
           onClick={() => navigate("/my-donations")}
         >
           <SlNotebook className={styles["icon"]} />
-          <h3 className={styles["card-title"]}>My Donations</h3>
+          <h3 className={styles["card-title"]}>My Orders history</h3>
           <p className={styles["card-desc"]}>
-            Review your medicine donations. See information about who are in
-            need of your medicine.
+            Review your medicine donations and receive requests. See information
+            about who are in need of your medicine.
           </p>
         </Card>
 

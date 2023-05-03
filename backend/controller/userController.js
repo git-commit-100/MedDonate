@@ -5,7 +5,7 @@ const uploadImage = require("../utils/uploadImage");
 const { Op, where, or } = require("sequelize");
 
 // user registration
-const postRegisterUser = (req, res, next) => {
+const postRegisterUser = (req, res) => {
   // check if user already has an account
   User.findOne({ where: { email: req.body.email } })
     .then((user) => {
@@ -24,7 +24,7 @@ const postRegisterUser = (req, res, next) => {
 };
 
 // user login
-const postLoginUser = (req, res, next) => {
+const postLoginUser = (req, res) => {
   const { email, password } = req.body;
   User.findOne({ where: { email: email } })
     .then((user) => {
@@ -56,7 +56,7 @@ const postLoginUser = (req, res, next) => {
 };
 
 // user logout
-const postLogoutUser = (req, res, next) => {
+const postLogoutUser = (req, res) => {
   const { id } = req.params;
 
   User.findOne({ where: { id: id } })
@@ -73,9 +73,9 @@ const postLogoutUser = (req, res, next) => {
 };
 
 // user medicine donatio
-const postMedicineDonation = (req, res, next) => {
+const postMedicineDonation = (req, res) => {
   const medImg = uploadImage(req, res);
-  const { medName, doe, medType, medDesc, ndc } = req.body;
+  const { userId, medName, doe, medType, medDesc, ndc } = req.body;
 
   // db
   Medicine.create({
@@ -85,7 +85,7 @@ const postMedicineDonation = (req, res, next) => {
     medImg,
     doe,
     ndc,
-    donatingUser: req.user.id,
+    donatingUser: userId,
   })
     .then((med) => {
       // special method
@@ -102,7 +102,7 @@ const postMedicineDonation = (req, res, next) => {
 };
 
 // get donated medicines
-const getDonatedMedicines = (req, res, next) => {
+const getDonatedMedicines = (req, res) => {
   // get meds -> only admin approved (1)
   Medicine.findAll({
     where: {
@@ -125,7 +125,7 @@ const getDonatedMedicines = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const getDonatedMedicinesOne = (req, res, next) => {
+const getDonatedMedicinesOne = (req, res) => {
   const { medId } = req.params;
 
   Medicine.findOne({
@@ -151,7 +151,7 @@ const getDonatedMedicinesOne = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const getReceivedMedicines = (req, res, next) => {
+const getReceivedMedicines = (req, res) => {
   // get meds -> only admin approved (1)
   Medicine.findAll({
     where: {
@@ -171,21 +171,15 @@ const getReceivedMedicines = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const postReceivedMedicines = (req, res, next) => {
-  const { medId } = req.params;
+const postReceivedMedicines = (req, res) => {
+  const { userId, medId } = req.params;
   // logged in user
-  const { id } = req.user;
 
   // get medicine
   Medicine.findOne({ where: { id: medId } })
     .then((med) => {
-      med.receivingUser = id;
+      med.receivingUser = userId;
       return med.save();
-    })
-    .then(() => {
-      return Order.create({
-        medId: medId,
-      });
     })
     .then(() => {
       return res.status(200).send("Medicine request successful");
@@ -194,10 +188,10 @@ const postReceivedMedicines = (req, res, next) => {
 };
 
 // get user profile
-const getUserProfile = (req, res, next) => {
-  const { id } = req.user;
+const getUserProfile = (req, res) => {
+  const { userId } = req.params;
 
-  User.findOne({ where: { id: id } })
+  User.findOne({ where: { id: userId } })
     .then((user) => {
       return res.status(200).send(user);
     })
@@ -205,11 +199,11 @@ const getUserProfile = (req, res, next) => {
 };
 
 // post user profie -> updated changes
-const postUserProfile = (req, res, next) => {
-  const { id } = req.user;
+const postUserProfile = (req, res) => {
+  const { userId } = req.params;
   const { name, email, password, phone_number, city, address } = req.body;
 
-  User.findOne({ where: { id: id } })
+  User.findOne({ where: { id: userId } })
     .then((user) => {
       if (!user) {
         return res.status(200).send("User not found");
@@ -228,14 +222,14 @@ const postUserProfile = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const getUserDonatedMedicine = (req, res, next) => {
-  const { id } = req.user;
+const getUserDonatedMedicine = (req, res) => {
+  const { userId } = req.params;
 
   Order.findAll({
     include: {
       model: Medicine,
       as: "medInfo",
-      where: { donatingUser: id },
+      where: { donatingUser: userId },
       include: [
         { model: User, as: "donatingUserInfo" },
         { model: User, as: "receivingUserInfo" },
@@ -246,14 +240,14 @@ const getUserDonatedMedicine = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const getUserReceivedMedicine = (req, res, next) => {
-  const { id } = req.user;
+const getUserReceivedMedicine = (req, res) => {
+  const { userId } = req.params;
 
   Order.findAll({
     include: {
       model: Medicine,
       as: "medInfo",
-      where: { receivingUser: id },
+      where: { receivingUser: userId },
       include: [
         { model: User, as: "donatingUserInfo" },
         { model: User, as: "receivingUserInfo" },
@@ -264,7 +258,7 @@ const getUserReceivedMedicine = (req, res, next) => {
     .catch((err) => res.send(err));
 };
 
-const postChangeOrderState = (req, res, next) => {
+const postChangeOrderState = (req, res) => {
   const { orderId, type } = req.params;
 
   if (type === "dispatch") {

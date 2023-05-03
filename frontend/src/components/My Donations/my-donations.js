@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./my-donations.module.scss";
 import { images } from "../../assets/images";
 import { BiBlock } from "react-icons/bi";
@@ -6,6 +6,7 @@ import Button from "../layout/UI/Button";
 import axios from "axios";
 import LocalImage from "../../utils/localImage";
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../../utils/store/appContext";
 
 const changeOrderState = (orderId, type) => {
   axios
@@ -33,13 +34,13 @@ function getData(pageState, data) {
     }
 
     if (pageState === "donate") {
-      if (medInfo.adminApproveReceive) {
+      if (medInfo.adminApproveDonation) {
         adminImage = images.check;
       } else {
         adminImage = images.warning;
       }
     } else {
-      if (medInfo.adminApproveDonation) {
+      if (medInfo.adminApproveReceive) {
         adminImage = images.check;
       } else {
         adminImage = images.warning;
@@ -94,10 +95,10 @@ function getData(pageState, data) {
             <img src={adminImage} alt="status" />
             <p className={styles["status"]} style={{ width: "100%" }}>
               {pageState === "donate"
-                ? medInfo.adminApproveReceive
+                ? medInfo.adminApproveDonation
                   ? "Approved"
                   : "Waiting"
-                : medInfo.adminApproveDonation
+                : medInfo.adminApproveReceive
                 ? "Approved"
                 : "Waiting"}
             </p>
@@ -117,7 +118,7 @@ function getData(pageState, data) {
               </>
             ) : (
               <>
-                {medInfo.adminApproveDonation ? (
+                {medInfo.adminApproveReceive ? (
                   <>
                     <p className={styles["name"]}>
                       {medInfo.receivingUserInfo.name}
@@ -172,7 +173,7 @@ function getData(pageState, data) {
                     text={"Change state ?"}
                     size={"xs"}
                     type={"secondary"}
-                    disabled={medInfo.adminApproveDonation ? false : true}
+                    disabled={medInfo.adminApproveReceive ? false : true}
                     // initiate a update db query
                     onClick={() => changeOrderState(id, "receive")}
                   ></Button>
@@ -275,7 +276,7 @@ function getData(pageState, data) {
           {pageState === "receive" && (
             <>
               <h3 style={{ margin: "1rem 0" }}>User Information</h3>
-              {medInfo.adminApproveDonation ? (
+              {medInfo.adminApproveReceive ? (
                 <div className={styles["user-info-div"]}>
                   <div className={styles["user-info"]}>
                     <div className={styles["img-div"]}>
@@ -332,11 +333,12 @@ function MyDonations() {
   const [pageState, setPageState] = useState("donate");
   const [queryRes, setQueryRes] = useState([]);
   const navigate = useNavigate();
+  const ctx = useContext(AppContext);
 
   useEffect(() => {
     if (pageState === "donate") {
       axios
-        .get("http://localhost:8080/user/donated-meds")
+        .get(`http://localhost:8080/user/donated-meds/${ctx.token}`)
         .then(({ data }) => {
           let queryData = getData(pageState, data);
           setQueryRes(queryData);
@@ -344,7 +346,7 @@ function MyDonations() {
         .catch((err) => console.log(err));
     } else {
       axios
-        .get("http://localhost:8080/user/received-meds")
+        .get(`http://localhost:8080/user/received-meds/${ctx.token}`)
         .then(({ data }) => {
           console.log(data);
           let queryData = getData(pageState, data);
@@ -352,7 +354,7 @@ function MyDonations() {
         })
         .catch((err) => console.log(err));
     }
-  }, [pageState]);
+  }, [pageState, ctx.token]);
 
   return (
     <>

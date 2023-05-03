@@ -70,12 +70,14 @@ function AdminDonations() {
                 <span>City:&nbsp;</span>
                 {med.donatingUserInfo.city}
               </h4>
-              {med.adminApproveDonation && (
-                <h4 style={{ color: "#2191f7" }}>
-                  <span>Status :&nbsp;</span>
-                  Approved
-                </h4>
-              )}
+              <h4
+                style={{
+                  color: med.adminApproveDonation ? "#2191f7" : "#db0000",
+                }}
+              >
+                <span>Status :&nbsp;</span>
+                {med.adminApproveDonation ? "Approved" : "Not approved"}
+              </h4>
               <div className={styles["actions-div"]}>
                 <Button
                   type="secondary"

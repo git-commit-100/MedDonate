@@ -28,10 +28,10 @@ router.post("/login", postLoginUser);
 router.post("/logout/:id", postLogoutUser);
 
 // router -> /user/donated-meds
-router.get("/donated-meds", getUserDonatedMedicine);
+router.get("/donated-meds/:userId", getUserDonatedMedicine);
 
 // router -> /user/received-meds
-router.get("/received-meds", getUserReceivedMedicine);
+router.get("/received-meds/:userId", getUserReceivedMedicine);
 
 // route -> /user/donate1
 router.get("/donate/:medId", getDonatedMedicinesOne);
@@ -46,7 +46,7 @@ router.post("/donate", postMedicineDonation);
 router.get("/receive", getReceivedMedicines);
 
 // route -> /user/receive
-router.post("/receive/:medId", postReceivedMedicines);
+router.post("/receive/:userId/:medId", postReceivedMedicines);
 
 // route -> /user/profile
 router.get("/profile", getUserProfile);
